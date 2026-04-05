@@ -36,7 +36,7 @@ const RECOMMENDATIONS: Record<string, string[]> = {
     planning: ["S&OP Planning platform", "Demand sensing AI"],
     transport: ["TMS route optimization", "Carrier management"],
     warehouse: ["WMS with labor management", "DC automation assessment"],
-    order: ["OMS with auto-routing", "Order orchestration"),],
+    order: ["OMS with auto-routing", "Order orchestration"],
     returns: ["Returns management module", "Reverse logistics process"],
     reporting: ["BI dashboard integration", "Real-time data lake"],
     integration: ["API middleware platform", "Integration hub"],

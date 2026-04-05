@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { SessionProvider } from "next-auth/react"
-import { auth } from "@/../../auth"
+import { auth } from "@/lib/auth"
 import WorkspaceLayout from "@/components/WorkspaceLayout"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -18,7 +18,7 @@ export default async function RootLayout({
   params: _params,
 }: {
   children: React.ReactNode
-  params?: Record<string, string>
+  params?: Promise<Record<string, string>>
 }) {
   const session = await auth()
   const isPublicPage = !session?.user

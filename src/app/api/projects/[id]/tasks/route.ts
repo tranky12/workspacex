@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/../../auth"
+import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 
 // GET /api/projects/[id]/tasks
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
@@ -20,7 +21,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 // POST /api/projects/[id]/tasks — create a task
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 

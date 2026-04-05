@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/../../auth"
+import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { chat, PERSONA_PROMPTS, AIProvider } from "@/lib/ai-providers"
 
 export async function POST(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    props: { params: Promise<{ id: string }> }
 ) {
+    const params = await props.params
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 

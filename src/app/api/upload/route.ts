@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/../../auth"
+import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { writeFile, mkdir } from "fs/promises"
 import { join } from "path"
@@ -12,16 +12,12 @@ let mammoth: { extractRawText: (options: { buffer: Buffer }) => Promise<{ value:
 async function loadParsers() {
     if (!pdfParse) {
         const pdfModule = await import("pdf-parse")
-        pdfParse = pdfModule.default
+        pdfParse = (pdfModule as any).default || pdfModule
     }
     if (!mammoth) {
         const mammothModule = await import("mammoth")
         mammoth = mammothModule
     }
-}
-
-export const config = {
-    api: { bodyParser: false },
 }
 
 export async function POST(req: NextRequest) {

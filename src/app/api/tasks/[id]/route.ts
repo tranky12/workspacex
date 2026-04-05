@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/../../auth"
+import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 
 // PATCH /api/tasks/[id] — update task
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
@@ -30,7 +31,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 // DELETE /api/tasks/[id]
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     await prisma.task.delete({ where: { id: params.id } })
