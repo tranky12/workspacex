@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PresaleX — SC&L Expert Workspace</title>
+  <meta name="description" content="Professional presale solution support workspace for Supply Chain & Logistics consultants. AI-powered expert panels, proposal builder, and deal qualification tools." />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+<!-- ======================================================
+     APP LAYOUT
+====================================================== -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">⟡</div>
+      <div class="logo-text">
+        <div class="logo-title">PresaleX</div>
+        <div class="logo-sub">SC&amp;L Expert Workspace</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Workspace</div>
+      <div class="nav-item active" data-module="dashboard" id="nav-dashboard">
+        <span class="nav-icon">⬡</span>
+        <span class="nav-label">Dashboard</span>
+        <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item" data-module="expert-panel" id="nav-expert-panel">
+        <span class="nav-icon">🧠</span>
+        <span class="nav-label">Expert Panel</span>
+      </div>
+
+      <div class="nav-section-label">Tools</div>
+      <div class="nav-item" data-module="proposal-builder" id="nav-proposal-builder">
+        <span class="nav-icon">📐</span>
+        <span class="nav-label">Proposal Builder</span>
+      </div>
+      <div class="nav-item" data-module="deal-qualifier" id="nav-deal-qualifier">
+        <span class="nav-icon">🎯</span>
+        <span class="nav-label">Deal Qualifier</span>
+      </div>
+      <div class="nav-item" data-module="client-intel" id="nav-client-intel">
+        <span class="nav-icon">🔍</span>
+        <span class="nav-label">Client Intelligence</span>
+      </div>
+
+      <div class="nav-section-label">Library</div>
+      <div class="nav-item" data-module="knowledge-base" id="nav-knowledge-base">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">Knowledge Base</span>
+      </div>
+      <div class="nav-item" data-module="solution-templates" id="nav-solution-templates">
+        <span class="nav-icon">🗂️</span>
+        <span class="nav-label">Solution Templates</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-toggle" id="sidebar-toggle">
+      <span class="toggle-icon" id="toggle-icon">◀</span>
+      <span class="nav-label">Collapse</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content" id="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-breadcrumb">PresaleX <span>›</span> <span id="topbar-crumb">Overview</span></div>
+      </div>
+      <div class="topbar-actions">
+        <div class="status-dot" title="All systems active"></div>
+        <div class="topbar-btn" title="Notifications" id="btn-notif">🔔</div>
+        <div class="topbar-btn" title="Settings">⚙️</div>
+        <div class="user-avatar" title="Senior SC&L Consultant">SC</div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT AREA -->
+    <div class="page-content">
+
+      <!-- ================================================
+           MODULE: DASHBOARD
+      ================================================ -->
+      <div class="module-page active" id="page-dashboard">
+        <div class="page-headline">Good afternoon, Consultant 👋</div>
+        <p class="page-sub">Here's your presale pipeline overview for Q2 2026.</p>
+
+        <!-- Stat Cards -->
+        <div class="grid-4" style="margin-bottom:28px;">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(0,212,170,0.12);">💼</div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Active Opportunities</div>
+            <div class="stat-change up">▲ 3 new this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(245,158,11,0.12);">💰</div>
+            <div class="stat-value">$4.2M</div>
+            <div class="stat-label">Pipeline Value</div>
+            <div class="stat-change up">▲ 18% vs last quarter</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(139,92,246,0.12);">📄</div>
+            <div class="stat-value">7</div>
+            <div class="stat-label">Proposals In Progress</div>
+            <div class="stat-change up">▲ 2 submitted this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(16,185,129,0.12);">✅</div>
+            <div class="stat-value">68%</div>
+            <div class="stat-label">Win Rate (LTM)</div>
+            <div class="stat-change up">▲ +5% YoY improvement</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Pipeline -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+              <div class="section-title" style="margin-bottom:0;">Active Pipeline</div>
+              <button class="btn btn-secondary btn-sm">View All</button>
+            </div>
+            <div class="pipeline-item">
+              <div>
+                <div class="pipeline-company">Vingroup Logistics</div>
+                <div class="pipeline-meta">TMS Implementation · Hanoi</div>
+              </div>
+              <div class="badge badge-accent">Proposal</div>
+              <div class="pipeline-value">$850K</div>
+            </div>
+            <div class="pipeline-item">
+              <div>
+                <div class="pipeline-company">THACO Auto</div>
+                <div class="pipeline-meta">WMS + OMS Integration · HCMC</div>
+              </div>
+              <div class="badge badge-primary">Discovery</div>
+              <div class="pipeline-value">$1.2M</div>
+            </div>
+            <div class="pipeline-item">
+              <div>
+                <div class="pipeline-company">Masan Consumer</div>
+                <div class="pipeline-meta">Integrated SC Planning · National</div>
+              </div>
+              <div class="badge badge-purple">Demo</div>
+              <div class="pipeline-value">$680K</div>
+            </div>
+            <div class="pipeline-item">
+              <div>
+                <div class="pipeline-company">Saigon Co.op</div>
+                <div class="pipeline-meta">Last-Mile Optimization · HCMC</div>
+              </div>
+              <div class="badge badge-blue">Qualified</div>
+              <div class="pipeline-value">$420K</div>
+            </div>
+            <div class="pipeline-item">
+              <div>
+                <div class="pipeline-company">Viettel Post</div>
+                <div class="pipeline-meta">Route Planning System · National</div>
+              </div>
+              <div class="badge badge-emerald">Negotiation</div>
+              <div class="pipeline-value">$1.05M</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions + Recent Activity -->
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div class="card">
+              <div class="section-title">Quick Actions</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <button class="btn btn-primary" onclick="navigate('proposal-builder')">📐 New Proposal</button>
+                <button class="btn btn-secondary" onclick="navigate('deal-qualifier')">🎯 Qualify Deal</button>
+                <button class="btn btn-secondary" onclick="navigate('client-intel')">🔍 Client Profile</button>
+                <button class="btn btn-secondary" onclick="navigate('expert-panel')">🧠 Ask Expert</button>
+              </div>
+            </div>
+            <div class="card" style="flex:1;">
+              <div class="section-title">Recent Activity</div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-date">Today, 09:45</div>
+                  <div class="timeline-content">Proposal deck sent to <strong style="color:var(--color-primary)">Vingroup Logistics</strong></div>
+                  <div class="timeline-meta">TMS Solution — 24 slides</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-date">Yesterday, 14:30</div>
+                  <div class="timeline-content">Discovery call completed — <strong style="color:var(--color-primary)">THACO Auto</strong></div>
+                  <div class="timeline-meta">Pain points: inventory accuracy, multi-DC sync</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-date">Apr 3, 11:00</div>
+                  <div class="timeline-content">Deal qualified — <strong style="color:var(--color-accent)">Masan Consumer</strong> score 74/100</div>
+                  <div class="timeline-meta">Strong technical fit, budget confirmed</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-date">Apr 2, 16:15</div>
+                  <div class="timeline-content">New lead created — <strong style="color:var(--color-primary)">Viettel Post</strong></div>
+                  <div class="timeline-meta">Inbound via LinkedIn. Route planning RFQ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expertise Coverage -->
+        <div class="card" style="margin-top:20px;">
+          <div class="section-title">Team Expertise Coverage</div>
+          <div class="grid-3">
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                <span>Supply Chain Strategy</span><span style="color:var(--color-primary);font-weight:700;">95%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                <span>TMS / Last-Mile</span><span style="color:var(--color-primary);font-weight:700;">90%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                <span>WMS / Warehousing</span><span style="color:var(--color-primary);font-weight:700;">88%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:88%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                <span>Integrated Planning / S&OP</span><span style="color:var(--color-accent);font-weight:700;">82%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill accent" style="width:82%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                <span>OMS / E-commerce Fulfillment</span><span style="color:var(--color-accent);font-weight:700;">79%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill accent" style="width:79%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                <span>Slide Deck &amp; Storytelling</span><span style="color:var(--color-purple);font-weight:700;">98%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill purple" style="width:98%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================
+           MODULE: EXPERT PANEL
+      ================================================ -->
+      <div class="module-page" id="page-expert-panel">
+        <div class="page-headline">AI Expert Panel</div>
+        <p class="page-sub">Select a persona and consult with a specialized AI expert for presale support.</p>
+
+        <div class="persona-grid">
+          <div class="persona-card consultant selected" data-persona="consultant" id="persona-consultant">
+            <div class="persona-header">
+              <div class="persona-avatar consultant">🏛️</div>
+              <div>
+                <div class="persona-name">Dr. Minh Khoa</div>
+                <div class="persona-title">Senior SC&amp;L Consultant · 30 Years</div>
+              </div>
+            </div>
+            <p class="persona-bio">Formerly McKinsey &amp; Company, Blue Yonder, KPMG. Specialized in supply chain transformation, logistics network design, and digital maturity for Fortune 500 and domestic conglomerates across Vietnam and Southeast Asia.</p>
+            <div class="persona-tags">
+              <span class="persona-tag">SCOR Model</span>
+              <span class="persona-tag">Network Design</span>
+              <span class="persona-tag">McKinsey</span>
+              <span class="persona-tag">Blue Yonder</span>
+              <span class="persona-tag">KPMG</span>
+              <span class="persona-tag">Vietnam Market</span>
+            </div>
+          </div>
+
+          <div class="persona-card designer" data-persona="designer" id="persona-designer">
+            <div class="persona-header">
+              <div class="persona-avatar designer">🎨</div>
+              <div>
+                <div class="persona-name">Linh Anh</div>
+                <div class="persona-title">Proposal Designer · 10 Years</div>
+              </div>
+            </div>
+            <p class="persona-bio">Expert in crafting executive-grade slide decks and proposal narratives. Blends data visualization, brand storytelling, and persuasion design to deliver proposals that win deals at C-suite and board level.</p>
+            <div class="persona-tags">
+              <span class="persona-tag">Slide Storytelling</span>
+              <span class="persona-tag">Data Viz</span>
+              <span class="persona-tag">Executive Decks</span>
+              <span class="persona-tag">Brand Design</span>
+              <span class="persona-tag">Persuasion</span>
+            </div>
+          </div>
+
+          <div class="persona-card bod" data-persona="bod" id="persona-bod">
+            <div class="persona-header">
+              <div class="persona-avatar bod">🏢</div>
+              <div>
+                <div class="persona-name">Mr. Trung Kiên</div>
+                <div class="persona-title">BOD Strategic Advisor · Ex-CEO</div>
+              </div>
+            </div>
+            <p class="persona-bio">Former CEO and Head of Supply Chain of top Vietnamese enterprises. Brings board-level critical thinking, financial rigor, and C-suite objection handling experience to pressure-test proposals and strategies.</p>
+            <div class="persona-tags">
+              <span class="persona-tag">BOD Mindset</span>
+              <span class="persona-tag">ROI Analysis</span>
+              <span class="persona-tag">Objection Handling</span>
+              <span class="persona-tag">P&amp;L Thinking</span>
+              <span class="persona-tag">Risk Assessment</span>
+            </div>
+          </div>
+
+          <div class="persona-card techleader" data-persona="techleader" id="persona-techleader">
+            <div class="persona-header">
+              <div class="persona-avatar techleader">⚙️</div>
+              <div>
+                <div class="persona-name">Thanh Hùng</div>
+                <div class="persona-title">Digital Transformation Lead · 15 Years</div>
+              </div>
+            </div>
+            <p class="persona-bio">Led 20+ enterprise digitization programs across TMS, WMS, OMS, and S&amp;OP planning systems. Expert in system architecture, integration complexity, change management, and implementation risk mitigation.</p>
+            <div class="persona-tags">
+              <span class="persona-tag">TMS/WMS/OMS</span>
+              <span class="persona-tag">System Integration</span>
+              <span class="persona-tag">Change Management</span>
+              <span class="persona-tag">SAP/Oracle</span>
+              <span class="persona-tag">Blue Yonder</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-panel">
+          <div class="chat-header">
+            <div class="persona-avatar consultant" id="chat-avatar" style="width:36px;height:36px;font-size:18px;">🏛️</div>
+            <div>
+              <div style="font-weight:700;font-size:14px;" id="chat-persona-name">Dr. Minh Khoa</div>
+              <div style="font-size:11px;color:var(--text-secondary);" id="chat-persona-role">Senior SC&amp;L Consultant · Ready to assist</div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="clearChat()">🗑 Clear</button>
+              <button class="btn btn-primary btn-sm" onclick="navigate('proposal-builder')">📐 Use in Proposal</button>
+            </div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-msg">
+              <div class="chat-msg-avatar" style="background:rgba(0,212,170,0.15);border:2px solid rgba(0,212,170,0.3);">🏛️</div>
+              <div class="chat-msg-body">
+                Xin chào! Tôi là <strong>Dr. Minh Khoa</strong>, chuyên gia tư vấn Supply Chain & Logistics với 30 năm kinh nghiệm từ McKinsey, Blue Yonder và KPMG.<br><br>
+                Hãy cho tôi biết về deal bạn đang làm việc — khách hàng là ai, ngành nào, pain point chính là gì? Tôi sẽ giúp bạn xây dựng strategy phù hợp nhất.
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input class="chat-input" id="chat-input" placeholder="Hỏi chuyên gia… (e.g. Khách hàng là FMCG, cần triển khai TMS, budget $500K)" />
+            <button class="btn btn-primary" onclick="sendChatMessage()">Send ↗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================
+           MODULE: PROPOSAL BUILDER
+      ================================================ -->
+      <div class="module-page" id="page-proposal-builder">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;">
+          <div>
+            <div class="page-headline">Proposal Builder</div>
+            <p class="page-sub">Build, structure & preview your client-ready proposal deck.</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-secondary">💾 Save Draft</button>
+            <button class="btn btn-accent" onclick="startPresentation()">▶ Present</button>
+          </div>
+        </div>
+
+        <div class="proposal-layout">
+          <!-- Slide List -->
+          <div class="slide-list">
+            <div class="slide-list-header">
+              <span>Slides</span>
+              <button class="btn btn-primary btn-sm" onclick="showToast('Slide added!','📄')">+ Add</button>
+            </div>
+            <div class="slide-items" id="slide-list-items">
+              <!-- injected by JS -->
+            </div>
+          </div>
+
+          <!-- Slide Editor -->
+          <div class="slide-editor">
+            <div class="slide-toolbar">
+              <div class="badge badge-primary" id="slide-tool-label">Slide 1 of 10</div>
+              <button class="btn btn-ghost btn-sm">✏️ Edit Content</button>
+              <button class="btn btn-ghost btn-sm">🎨 Style</button>
+              <button class="btn btn-ghost btn-sm">📊 Add Chart</button>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+                <span style="font-size:12px;color:var(--text-muted);">Tone:</span>
+                <select class="form-select" style="width:120px;padding:6px 10px;" id="tone-select">
+                  <option>Executive</option><option>Consultative</option><option>Technical</option><option>Visionary</option>
+                </select>
+              </div>
+            </div>
+            <div class="slide-preview">
+              <div class="slide-canvas" id="slide-canvas">
+                <!-- injected by JS -->
+              </div>
+            </div>
+            <div style="padding:12px 20px;border-top:1px solid var(--border-subtle);display:flex;align-items:center;gap:10px;">
+              <button class="btn btn-ghost btn-sm" id="btn-prev-slide">← Prev</button>
+              <button class="btn btn-ghost btn-sm" id="btn-next-slide">Next →</button>
+              <span style="flex:1;font-size:12px;color:var(--text-muted);">Speaker notes: click to edit…</span>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Exported to PDF!','📄')">⬇ Export PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================
+           MODULE: KNOWLEDGE BASE
+      ================================================ -->
+      <div class="module-page" id="page-knowledge-base">
+        <div class="page-headline">Knowledge Base</div>
+        <p class="page-sub">SC&amp;L frameworks, digital maturity models, and solution maps for rapid proposal development.</p>
+
+        <div class="kb-tabs">
+          <div class="kb-tab active" data-tab="frameworks">Frameworks</div>
+          <div class="kb-tab" data-tab="maturity">Maturity Model</div>
+          <div class="kb-tab" data-tab="solutionmap">Solution Map</div>
+          <div class="kb-tab" data-tab="casestudies">Case Studies</div>
+        </div>
+
+        <!-- Frameworks Tab -->
+        <div class="kb-content active" id="kb-frameworks">
+          <div class="grid-3">
+            <div class="framework-card">
+              <div class="framework-icon">🔷</div>
+              <div class="framework-name">SCOR Framework</div>
+              <p class="framework-desc">Supply Chain Operations Reference model — defines Plan, Source, Make, Deliver, Return, Enable processes. Used to benchmark and redesign end-to-end SC performance.</p>
+              <div class="framework-tags">
+                <span class="badge badge-primary">Strategic</span>
+                <span class="badge badge-blue">Benchmarking</span>
+              </div>
+            </div>
+            <div class="framework-card">
+              <div class="framework-icon">🚚</div>
+              <div class="framework-name">Last-Mile Optimization</div>
+              <p class="framework-desc">Framework for last-mile cost reduction via route optimization, hub-and-spoke network design, and carrier performance management in Vietnam's urban and rural markets.</p>
+              <div class="framework-tags">
+                <span class="badge badge-accent">Logistics</span>
+                <span class="badge badge-emerald">Cost Reduction</span>
+              </div>
+            </div>
+            <div class="framework-card">
+              <div class="framework-icon">❄️</div>
+              <div class="framework-name">Cold Chain Excellence</div>
+              <p class="framework-desc">End-to-end cold chain quality assurance for pharma, food, and retail sectors — covering temperature monitoring, compliance, and carrier qualification protocols.</p>
+              <div class="framework-tags">
+                <span class="badge badge-blue">Pharma</span>
+                <span class="badge badge-primary">FMCG</span>
+              </div>
+            </div>
+            <div class="framework-card">
+              <div class="framework-icon">📊</div>
+              <div class="framework-name">S&amp;OP / IBP Process</div>
+              <p class="framework-desc">Integrated Business Planning cycle design — monthly cadence, cross-functional alignment between demand, supply, finance, and executive review tiers.</p>
+              <div class="framework-tags">
+                <span class="badge badge-purple">Planning</span>
+                <span class="badge badge-accent">IBP</span>
+              </div>
+            </div>
+            <div class="framework-card">
+              <div class="framework-icon">🔗</div>
+              <div class="framework-name">Omnichannel Fulfillment</div>
+              <p class="framework-desc">OMS-centered design for unified inventory visibility, BOPIS, ship-from-store, and seamless customer experience across e-commerce and physical retail channels.</p>
+              <div class="framework-tags">
+                <span class="badge badge-purple">E-comm</span>
+                <span class="badge badge-emerald">OMS</span>
+              </div>
+            </div>
+            <div class="framework-card">
+              <div class="framework-icon">🏭</div>
+              <div class="framework-name">Warehouse Excellence</div>
+              <p class="framework-desc">Slotting optimization, labor productivity benchmarking, automation feasibility analysis (AMR/AS-RS), and WMS gap assessment for DC operations in Vietnam.</p>
+              <div class="framework-tags">
+                <span class="badge badge-primary">WMS</span>
+                <span class="badge badge-blue">Automation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Maturity Model Tab -->
+        <div class="kb-content" id="kb-maturity">
+          <div class="grid-2">
+            <div>
+              <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:20px;line-height:1.7;">Use this 5-level Digital SC Maturity Model to position client readiness and frame your solution recommendations during discovery and proposal.</p>
+              <div class="maturity-level">
+                <div class="maturity-num" style="background:rgba(244,63,94,0.15);color:var(--color-rose);">L1</div>
+                <div class="maturity-info">
+                  <div class="maturity-name">Reactive / Manual</div>
+                  <div class="maturity-desc">Excel-driven, siloed, reactive decision making. No visibility across SC.</div>
+                </div>
+                <div class="maturity-bar"><div class="progress-bar"><div class="progress-fill" style="width:20%;background:var(--color-rose);"></div></div></div>
+              </div>
+              <div class="maturity-level">
+                <div class="maturity-num" style="background:rgba(245,158,11,0.15);color:var(--color-accent);">L2</div>
+                <div class="maturity-info">
+                  <div class="maturity-name">Functional Integration</div>
+                  <div class="maturity-desc">Basic ERP + siloed WMS/TMS. Some data integration within function.</div>
+                </div>
+                <div class="maturity-bar"><div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--color-accent);"></div></div></div>
+              </div>
+              <div class="maturity-level">
+                <div class="maturity-num" style="background:rgba(59,130,246,0.15);color:var(--color-blue);">L3</div>
+                <div class="maturity-info">
+                  <div class="maturity-name">Cross-Functional Visibility</div>
+                  <div class="maturity-desc">Connected systems, real-time dashboards. S&amp;OP cadence established.</div>
+                </div>
+                <div class="maturity-bar"><div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--color-blue);"></div></div></div>
+              </div>
+              <div class="maturity-level">
+                <div class="maturity-num" style="background:rgba(0,212,170,0.15);color:var(--color-primary);">L4</div>
+                <div class="maturity-info">
+                  <div class="maturity-name">Predictive Intelligence</div>
+                  <div class="maturity-desc">ML-powered demand sensing, prescriptive analytics, control tower visibility.</div>
+                </div>
+                <div class="maturity-bar"><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+              </div>
+              <div class="maturity-level">
+                <div class="maturity-num" style="background:rgba(139,92,246,0.15);color:var(--color-purple);">L5</div>
+                <div class="maturity-info">
+                  <div class="maturity-name">Autonomous &amp; Adaptive</div>
+                  <div class="maturity-desc">AI-driven autonomous decision making. Fully digital &amp; ecosystem-connected SC.</div>
+                </div>
+                <div class="maturity-bar"><div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--color-purple);"></div></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-title">Vietnam Market Context</div>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px;">Based on 30-year market experience, most large Vietnamese enterprises are currently at:</p>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="card-glass">
+                  <div style="font-size:13px;font-weight:700;margin-bottom:4px;">🏢 Large Conglomerates</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Vingroup, THACO, Masan → L2–L3. High readiness, budget available. Focus on integration.</div>
+                </div>
+                <div class="card-glass">
+                  <div style="font-size:13px;font-weight:700;margin-bottom:4px;">🏭 Mid-Market Manufacturers</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">SME manufacturers → L1–L2. Strong ROI potential from basic WMS/TMS. Simpler scope.</div>
+                </div>
+                <div class="card-glass">
+                  <div style="font-size:13px;font-weight:700;margin-bottom:4px;">📦 3PL / Logistics Operators</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Viettel Post, BEST Express → L2–L3. Focus on TMS, route optimization, customer portals.</div>
+                </div>
+                <div class="card-glass">
+                  <div style="font-size:13px;font-weight:700;margin-bottom:4px;">🛒 Retail &amp; FMCG</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Saigon Co.op, WinMart → L2–L4 range. S&amp;OP, OMS, and omnichannel are top priorities.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solution Map Tab -->
+        <div class="kb-content" id="kb-solutionmap">
+          <div style="margin-bottom:24px;">
+            <div class="section-title">Transportation Management Systems (TMS)</div>
+            <div class="solution-map">
+              <div class="sol-card"><div class="sol-icon">🔵</div><div class="sol-name">Blue Yonder TMS</div><div class="sol-vendor">JDA / Blue Yonder · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🟠</div><div class="sol-name">SAP TM</div><div class="sol-vendor">SAP · Enterprise/Mid</div></div>
+              <div class="sol-card"><div class="sol-icon">🟣</div><div class="sol-name">Oracle OTM</div><div class="sol-vendor">Oracle · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🟢</div><div class="sol-name">MercuryGate</div><div class="sol-vendor">Uber Freight · Mid-Market</div></div>
+              <div class="sol-card"><div class="sol-icon">🔴</div><div class="sol-name">Körber TMS</div><div class="sol-vendor">Körber · Mid-Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🟡</div><div class="sol-name">LOGIVAN</div><div class="sol-vendor">Vietnam Local · SME/Mid</div></div>
+            </div>
+          </div>
+          <div style="margin-bottom:24px;">
+            <div class="section-title">Warehouse Management Systems (WMS)</div>
+            <div class="solution-map">
+              <div class="sol-card"><div class="sol-icon">🏗️</div><div class="sol-name">Blue Yonder WMS</div><div class="sol-vendor">Blue Yonder · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">📦</div><div class="sol-name">SAP EWM</div><div class="sol-vendor">SAP · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🚀</div><div class="sol-name">Manhattan WMS</div><div class="sol-vendor">Manhattan Associates · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">⚡</div><div class="sol-name">Körber WMS</div><div class="sol-vendor">Körber · Mid-Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🎯</div><div class="sol-name">Infor WMS</div><div class="sol-vendor">Infor · Mid-Market</div></div>
+              <div class="sol-card"><div class="sol-icon">🌏</div><div class="sol-name">Abivin vRoute</div><div class="sol-vendor">Vietnam Local · Mid</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-title">Planning &amp; S&OP Systems</div>
+            <div class="solution-map">
+              <div class="sol-card"><div class="sol-icon">📈</div><div class="sol-name">Blue Yonder IBP</div><div class="sol-vendor">Blue Yonder · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🔮</div><div class="sol-name">SAP IBP</div><div class="sol-vendor">SAP · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">🧩</div><div class="sol-name">Kinaxis RapidResponse</div><div class="sol-vendor">Kinaxis · Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">📡</div><div class="sol-name">o9 Solutions</div><div class="sol-vendor">o9 · Enterprise/Mid</div></div>
+              <div class="sol-card"><div class="sol-icon">🌀</div><div class="sol-name">Anaplan</div><div class="sol-vendor">Anaplan · Mid-Enterprise</div></div>
+              <div class="sol-card"><div class="sol-icon">⭐</div><div class="sol-name">Streamline.ai</div><div class="sol-vendor">Streamline · SME/Mid</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Studies Tab -->
+        <div class="kb-content" id="kb-casestudies">
+          <div class="grid-2">
+            <div class="card">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="width:44px;height:44px;background:rgba(0,212,170,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">🚛</div>
+                <div>
+                  <div style="font-weight:700;">TMS Transformation — Major 3PL Vietnam</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Blue Yonder TMS · 18 months · $1.2M</div>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">Deployed end-to-end TMS for a top-5 Vietnamese 3PL with 2,000+ trucks across 63 provinces. Achieved 23% fuel cost reduction and 95% on-time delivery rate.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge badge-primary">23% Cost Reduction</span>
+                <span class="badge badge-emerald">95% OTIF</span>
+                <span class="badge badge-blue">2,000 Trucks</span>
+              </div>
+            </div>
+            <div class="card">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="width:44px;height:44px;background:rgba(245,158,11,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">🏭</div>
+                <div>
+                  <div style="font-weight:700;">WMS Rollout — FMCG National DC Network</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Körber WMS · 12 months · $850K</div>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">Standardized WMS across 8 distribution centers for a leading FMCG company. Inventory accuracy improved from 82% to 99.4%, picking productivity up 35%.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge badge-accent">99.4% Accuracy</span>
+                <span class="badge badge-purple">35% Productivity</span>
+                <span class="badge badge-blue">8 DCs</span>
+              </div>
+            </div>
+            <div class="card">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="width:44px;height:44px;background:rgba(139,92,246,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">📊</div>
+                <div>
+                  <div style="font-weight:700;">S&amp;OP Redesign — Retail Conglomerate</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">o9 Solutions · 9 months · $600K</div>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">Redesigned monthly S&amp;OP process with o9 IBP platform for a retail conglomerate with 500+ SKUs. Forecast accuracy improved by 28 percentage points.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge badge-purple">+28% Forecast Accuracy</span>
+                <span class="badge badge-primary">500+ SKUs</span>
+              </div>
+            </div>
+            <div class="card">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="width:44px;height:44px;background:rgba(59,130,246,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">🛒</div>
+                <div>
+                  <div style="font-weight:700;">Omnichannel OMS — E-commerce Retailer</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Custom OMS · 14 months · $720K</div>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">Built omnichannel OMS enabling 100+ store fulfillment, BOPIS, and unified inventory. Cart abandonment dropped 18%, order processing time cut by 65%.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge badge-blue">100+ Stores</span>
+                <span class="badge badge-emerald">65% Faster Processing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================
+           MODULE: CLIENT INTELLIGENCE
+      ================================================ -->
+      <div class="module-page" id="page-client-intel">
+        <div class="page-headline">Client Intelligence</div>
+        <p class="page-sub">Build a comprehensive client profile to sharpen your discovery and proposal strategy.</p>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="section-title">Client Profile</div>
+            <div class="form-group">
+              <label class="form-label">Company Name</label>
+              <input class="form-input" placeholder="e.g. Vingroup Logistics" id="ci-company" />
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Industry Sector</label>
+                <select class="form-select" id="ci-industry">
+                  <option value="">Select sector…</option>
+                  <option>3PL / Logistics</option>
+                  <option>FMCG / Retail</option>
+                  <option>Manufacturing</option>
+                  <option>E-commerce</option>
+                  <option>Pharma / Healthcare</option>
+                  <option>Automotive</option>
+                  <option>Agri / Food</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Size</label>
+                <select class="form-select">
+                  <option>Enterprise (5000+)</option>
+                  <option>Large (1000–5000)</option>
+                  <option>Mid-Market (200–1000)</option>
+                  <option>SME (&lt;200)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Key Contact &amp; Title</label>
+              <input class="form-input" placeholder="e.g. Nguyễn Văn A — Head of Supply Chain" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Business Challenge (in their own words)</label>
+              <textarea class="form-textarea" placeholder="Paste verbatim notes from discovery call…"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Budget Range (USD)</label>
+              <select class="form-select">
+                <option>Under $100K</option>
+                <option>$100K – $300K</option>
+                <option>$300K – $800K</option>
+                <option>$800K – $2M</option>
+                <option>$2M+</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:20px;">
+              <div class="section-title">Pain Point Mapping</div>
+              <div class="pain-point-grid" id="pain-grid">
+                <!-- injected by JS -->
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-title">Recommended Solutions</div>
+              <div id="ci-recommendations" style="display:flex;flex-direction:column;gap:10px;">
+                <div class="card-glass" style="border-left:3px solid var(--color-primary);">
+                  <div style="font-size:13px;font-weight:600;margin-bottom:4px;">🚛 TMS Implementation</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Route optimization, carrier management, freight cost visibility</div>
+                </div>
+                <div class="card-glass" style="border-left:3px solid var(--color-accent);">
+                  <div style="font-size:13px;font-weight:600;margin-bottom:4px;">📊 S&amp;OP Process Design</div>
+                  <div style="font-size:12px;color:var(--text-secondary);">Monthly planning cadence, demand-supply alignment</div>
+                </div>
+                <p style="font-size:12px;color:var(--text-muted);text-align:center;padding-top:4px;">Select pain points above to refine recommendations ↑</p>
+              </div>
+              <div style="margin-top:16px;">
+                <button class="btn btn-primary" style="width:100%;" onclick="navigate('proposal-builder');showToast('Profile linked to proposal!','✅')">→ Build Proposal for This Client</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================
+           MODULE: DEAL QUALIFIER
+      ================================================ -->
+      <div class="module-page" id="page-deal-qualifier">
+        <div class="page-headline">Deal Qualifier</div>
+        <p class="page-sub">Score each opportunity using the MEDDIC framework to prioritize pursuit and next steps.</p>
+
+        <div class="qualifier-layout">
+          <div class="card">
+            <div class="section-title">MEDDIC Scorecard</div>
+            <div id="meddic-items">
+              <!-- injected by JS -->
+            </div>
+          </div>
+
+          <div class="score-panel">
+            <div class="score-total">
+              <div class="score-number" id="deal-score">0</div>
+              <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">/ 100</div>
+              <div class="score-label" id="deal-score-label">Score your deal →</div>
+            </div>
+            <div class="progress-bar" style="margin-bottom:20px;">
+              <div class="progress-fill" id="deal-score-bar" style="width:0%;"></div>
+            </div>
+            <div class="recommendation-box moderate" id="deal-recommendation">
+              Use the MEDDIC framework to evaluate each factor and get your deal qualification score with actionable next steps.
+            </div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Next Steps</div>
+            <div id="deal-next-steps" style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--text-secondary);">
+              <div>① Complete discovery on all MEDDIC dimensions</div>
+              <div>② Identify and engage Economic Buyer</div>
+              <div>③ Map decision criteria to your solution strengths</div>
+            </div>
+            <div style="margin-top:20px;">
+              <button class="btn btn-primary btn-sm" style="width:100%;" onclick="navigate('proposal-builder')">→ Build Proposal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================
+           MODULE: SOLUTION TEMPLATES
+      ================================================ -->
+      <div class="module-page" id="page-solution-templates">
+        <div class="page-headline">Solution Templates</div>
+        <p class="page-sub">Pre-built, battle-tested proposal frameworks tailored for each solution type. Click to load into Proposal Builder.</p>
+
+        <div class="grid-2">
+          <div class="template-card">
+            <div class="template-cover tms">🚛</div>
+            <div class="template-body">
+              <div class="template-name">TMS — Transportation Management</div>
+              <p class="template-desc">Complete proposal framework covering current-state assessment, route optimization ROI model, carrier management, control tower design, and implementation roadmap for TMS projects.</p>
+              <div class="template-slides">📑 22 Slides &nbsp;·&nbsp; 🕐 Estimated 120 min to customize</div>
+            </div>
+            <div class="template-footer">
+              <button class="btn btn-primary btn-sm" onclick="loadTemplate('TMS');navigate('proposal-builder');">⚡ Load Template</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Opening preview…','👁')">👁 Preview</button>
+            </div>
+          </div>
+
+          <div class="template-card">
+            <div class="template-cover wms">🏭</div>
+            <div class="template-body">
+              <div class="template-name">WMS — Warehouse Management</div>
+              <p class="template-desc">Comprehensive WMS proposal including DC operations audit, inventory accuracy diagnostics, labor productivity benchmarks, automation fit analysis, and phased rollout plan across multi-DC networks.</p>
+              <div class="template-slides">📑 26 Slides &nbsp;·&nbsp; 🕐 Estimated 90 min to customize</div>
+            </div>
+            <div class="template-footer">
+              <button class="btn btn-primary btn-sm" onclick="loadTemplate('WMS');navigate('proposal-builder');">⚡ Load Template</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Opening preview…','👁')">👁 Preview</button>
+            </div>
+          </div>
+
+          <div class="template-card">
+            <div class="template-cover oms">🛒</div>
+            <div class="template-body">
+              <div class="template-name">OMS — Order Management &amp; Omnichannel</div>
+              <p class="template-desc">Omnichannel fulfillment strategy, unified inventory visibility design, BOPIS &amp; ship-from-store blueprints, OMS vendor comparison matrix, and customer experience improvement roadmap.</p>
+              <div class="template-slides">📑 20 Slides &nbsp;·&nbsp; 🕐 Estimated 100 min to customize</div>
+            </div>
+            <div class="template-footer">
+              <button class="btn btn-primary btn-sm" onclick="loadTemplate('OMS');navigate('proposal-builder');">⚡ Load Template</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Opening preview…','👁')">👁 Preview</button>
+            </div>
+          </div>
+
+          <div class="template-card">
+            <div class="template-cover planning">📊</div>
+            <div class="template-body">
+              <div class="template-name">Integrated Planning — S&amp;OP / IBP</div>
+              <p class="template-desc">Full IBP/S&amp;OP transformation case — as-is process diagnostic, maturity gap analysis, technology selection framework, planning KPI design, and 24-month implementation roadmap with quick wins.</p>
+              <div class="template-slides">📑 28 Slides &nbsp;·&nbsp; 🕐 Estimated 150 min to customize</div>
+            </div>
+            <div class="template-footer">
+              <button class="btn btn-primary btn-sm" onclick="loadTemplate('Planning');navigate('proposal-builder');">⚡ Load Template</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Opening preview…','👁')">👁 Preview</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<!-- ================================================
+     PRESENTATION MODE OVERLAY
+================================================ -->
+<div class="presentation-overlay" id="presentation-overlay">
+  <button class="pres-exit" onclick="exitPresentation()">✕ Exit Presentation</button>
+  <div class="pres-slide">
+    <div class="pres-content">
+      <div class="pres-slide-num" id="pres-slide-num">Slide 1 of 10</div>
+      <div class="pres-title" id="pres-title">Loading…</div>
+      <div class="pres-body" id="pres-body"></div>
+      <div id="pres-badges" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"></div>
+    </div>
+    <div class="pres-controls">
+      <button class="pres-btn" onclick="prevPresSlide()">←</button>
+      <div class="pres-progress-text" id="pres-progress">1 / 10</div>
+      <button class="pres-btn" onclick="nextPresSlide()">→</button>
+    </div>
+  </div>
+  <div class="pres-notes" id="pres-notes">Speaker note: Introduce yourself and the team before diving into the agenda.</div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

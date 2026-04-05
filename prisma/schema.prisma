@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── AUTH ─────────────────────────────────────────────────
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          String    @default("consultant") // consultant | admin | viewer
+  accounts      Account[]
+  sessions      Session[]
+  deals         Deal[]
+  clients       Client[]
+  proposals     Proposal[]
+  messages      Message[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── DEALS / PIPELINE ─────────────────────────────────────
+model Deal {
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  value       Float    @default(0)
+  stage       String   @default("discovery") // discovery | qualified | proposal | demo | negotiation | won | lost
+  industry    String?
+  solution    String?  // TMS | WMS | OMS | Planning
+  score       Int      @default(0)  // MEDDIC 0-100
+  notes       String?  @db.Text
+  nextStep    String?
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id])
+  clientId    String?
+  client      Client?  @relation(fields: [clientId], references: [id])
+  proposals   Proposal[]
+  meddicData  Json?    // stores MEDDIC scores per dimension
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── CLIENTS ───────────────────────────────────────────────
+model Client {
+  id          String   @id @default(cuid())
+  name        String
+  industry    String?
+  size        String?
+  contact     String?
+  phone       String?
+  email       String?
+  address     String?
+  painPoints  String[] // array of pain point keys
+  maturityLevel Int   @default(2) // 1-5 digital maturity
+  notes       String? @db.Text
+  ownerId     String
+  owner       User    @relation(fields: [ownerId], references: [id])
+  deals       Deal[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── PROPOSALS ────────────────────────────────────────────
+model Proposal {
+  id          String   @id @default(cuid())
+  title       String
+  dealId      String?
+  deal        Deal?    @relation(fields: [dealId], references: [id])
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id])
+  template    String?  // TMS | WMS | OMS | Planning | custom
+  slides      Json     // array of slide objects
+  tone        String   @default("executive") // executive | technical | consultative
+  status      String   @default("draft") // draft | review | sent
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── KNOWLEDGE BASE ────────────────────────────────────────
+model KnowledgeDoc {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   // pdf | docx | pptx | image | text
+  content     String   @db.Text   // extracted text
+  embedding   Float[]  // vector embedding for semantic search
+  category    String?  // framework | case_study | template | competitor
+  tags        String[]
+  fileSize    Int?
+  fileUrl     String?  // stored file path
+  uploadedBy  String?
+  createdAt   DateTime @default(now())
+}
+
+// ─── CHAT MESSAGES ────────────────────────────────────────
+model Message {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  persona   String   // consultant | designer | bod | techleader
+  role      String   // user | assistant
+  content   String   @db.Text
+  sessionId String   // group messages into conversation sessions
+  createdAt DateTime @default(now())
+}

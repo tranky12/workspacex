@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PresaleX — SC&L Expert Workspace
 
-## Getting Started
+> Professional presale solution support workspace for Supply Chain & Logistics teams.
+> Built with Next.js 14, Google OAuth, Gemini AI, Supabase, and file intelligence.
 
-First, run the development server:
+## 🚀 Phase 1 Features
+- **Google OAuth** — Team sign-in via Google account
+- **Gemini AI Personas** — 4 real AI experts (SC&L Consultant, Designer, BOD Advisor, Tech Lead)
+- **File Upload & Parsing** — PDF, DOCX, PPTX → searchable knowledge base
+- **Deal Pipeline** — Track and qualify presale opportunities (MEDDIC)
+- **Proposal Builder** — Structured slide deck creation with templates
+- **Knowledge Base** — SC&L frameworks, case studies, solution maps
 
+## 🛠️ Tech Stack
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 14 (App Router) + TypeScript + Tailwind CSS |
+| Auth | NextAuth.js v5 + Google OAuth |
+| AI | Google Gemini 1.5 Pro |
+| Database | Supabase (PostgreSQL + pgvector) |
+| ORM | Prisma |
+| File Parsing | pdf-parse + mammoth (DOCX) + pptxgenjs |
+| Deploy | Vercel |
+
+## ⚙️ Setup
+
+### 1. Clone the repo
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/tranky12/presalex-workspace.git
+cd presalex-workspace
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure environment variables
+```bash
+cp .env.example .env.local
+```
+Fill in your keys in `.env.local` (see below).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Setup database
+```bash
+npx prisma generate
+npx prisma db push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Run locally
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+## 🔑 Environment Variables (`.env.local`)
+```
+# Google OAuth
+AUTH_GOOGLE_ID=your_google_client_id
+AUTH_GOOGLE_SECRET=your_google_client_secret
+AUTH_SECRET=your_nextauth_secret  # generate: openssl rand -hex 32
 
-To learn more about Next.js, take a look at the following resources:
+# Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Supabase
+DATABASE_URL=postgresql://postgres:[password]@[host]:5432/postgres
+NEXT_PUBLIC_SUPABASE_URL=https://[project].supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
+```
+src/
+├── app/
+│   ├── (auth)/           # Login page
+│   ├── (dashboard)/      # Protected workspace pages
+│   │   ├── page.tsx      # Dashboard
+│   │   ├── chat/         # AI Expert Panel
+│   │   ├── proposals/    # Proposal Builder
+│   │   ├── deals/        # Deal Qualifier (MEDDIC)
+│   │   ├── knowledge/    # Knowledge Base
+│   │   └── clients/      # Client Intelligence
+│   └── api/
+│       ├── auth/         # NextAuth config
+│       ├── chat/         # Gemini AI endpoint
+│       ├── upload/       # File upload & parsing
+│       └── knowledge/    # Vector search
+├── components/           # Shared UI components
+├── lib/                  # Utils, Prisma client, AI config
+└── prisma/               # Database schema
+```
 
-## Deploy on Vercel
+## 📋 Roadmap
+- [x] Phase 1: Next.js + Auth + Gemini AI + File Upload
+- [ ] Phase 2: Google Drive, Slack, Jira integrations
+- [ ] Phase 3: Smartlog template engine + PPTX export
+- [ ] Phase 4: Multi-user, roles, production deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏗️ Legacy Demo
+The original HTML/CSS/JS demo is preserved in `/legacy/` for reference.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+Private — Smartlog / PresaleX Team
