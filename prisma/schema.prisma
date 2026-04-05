@@ -38,20 +38,22 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
-  role          String    @default("consultant") // consultant | admin | viewer
+  role          String        @default("consultant")
   accounts      Account[]
   sessions      Session[]
   deals         Deal[]
   clients       Client[]
   proposals     Proposal[]
   messages      Message[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  settings      UserSettings?
+  skillRuns     SkillRun[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model VerificationToken {
@@ -62,77 +64,132 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// ─── USER AI SETTINGS ─────────────────────────────────────
+model UserSettings {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // AI Provider
+  aiProvider    String   @default("gemini") // gemini | openai | claude | azure
+  aiModel       String   @default("gemini-1.5-flash")
+  // API Keys (encrypt at rest in prod)
+  geminiApiKey  String?  @db.Text
+  openaiApiKey  String?  @db.Text
+  claudeApiKey  String?  @db.Text
+  azureApiKey   String?  @db.Text
+  azureEndpoint String?  @db.Text
+  // Integrations
+  slackWebhook  String?  @db.Text
+  jiraHost      String?
+  jiraEmail     String?
+  jiraToken     String?  @db.Text
+  jiraProject   String?
+  driveFolderId String?
+  updatedAt     DateTime @updatedAt
+}
+
 // ─── DEALS / PIPELINE ─────────────────────────────────────
 model Deal {
-  id          String   @id @default(cuid())
-  title       String
-  company     String
-  value       Float    @default(0)
-  stage       String   @default("discovery") // discovery | qualified | proposal | demo | negotiation | won | lost
-  industry    String?
-  solution    String?  // TMS | WMS | OMS | Planning
-  score       Int      @default(0)  // MEDDIC 0-100
-  notes       String?  @db.Text
-  nextStep    String?
-  ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id])
-  clientId    String?
-  client      Client?  @relation(fields: [clientId], references: [id])
-  proposals   Proposal[]
-  meddicData  Json?    // stores MEDDIC scores per dimension
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String     @id @default(cuid())
+  title      String
+  company    String
+  value      Float      @default(0)
+  stage      String     @default("discovery")
+  industry   String?
+  solution   String?
+  score      Int        @default(0)
+  notes      String?    @db.Text
+  nextStep   String?
+  ownerId    String
+  owner      User       @relation(fields: [ownerId], references: [id])
+  clientId   String?
+  client     Client?    @relation(fields: [clientId], references: [id])
+  proposals  Proposal[]
+  meddicData Json?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 // ─── CLIENTS ───────────────────────────────────────────────
 model Client {
-  id          String   @id @default(cuid())
-  name        String
-  industry    String?
-  size        String?
-  contact     String?
-  phone       String?
-  email       String?
-  address     String?
-  painPoints  String[] // array of pain point keys
-  maturityLevel Int   @default(2) // 1-5 digital maturity
-  notes       String? @db.Text
-  ownerId     String
-  owner       User    @relation(fields: [ownerId], references: [id])
-  deals       Deal[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  industry      String?
+  size          String?
+  contact       String?
+  phone         String?
+  email         String?
+  address       String?
+  painPoints    String[]
+  maturityLevel Int      @default(2)
+  notes         String?  @db.Text
+  ownerId       String
+  owner         User     @relation(fields: [ownerId], references: [id])
+  deals         Deal[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 // ─── PROPOSALS ────────────────────────────────────────────
 model Proposal {
-  id          String   @id @default(cuid())
-  title       String
-  dealId      String?
-  deal        Deal?    @relation(fields: [dealId], references: [id])
-  ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id])
-  template    String?  // TMS | WMS | OMS | Planning | custom
-  slides      Json     // array of slide objects
-  tone        String   @default("executive") // executive | technical | consultative
-  status      String   @default("draft") // draft | review | sent
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  title     String
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id])
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  template  String?
+  slides    Json
+  tone      String   @default("executive")
+  status    String   @default("draft")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ─── KNOWLEDGE BASE ────────────────────────────────────────
 model KnowledgeDoc {
-  id          String   @id @default(cuid())
-  name        String
-  type        String   // pdf | docx | pptx | image | text
-  content     String   @db.Text   // extracted text
-  embedding   Float[]  // vector embedding for semantic search
-  category    String?  // framework | case_study | template | competitor
-  tags        String[]
-  fileSize    Int?
-  fileUrl     String?  // stored file path
-  uploadedBy  String?
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  name       String
+  type       String
+  content    String   @db.Text
+  embedding  Float[]
+  category   String?
+  tags       String[]
+  fileSize   Int?
+  fileUrl    String?
+  uploadedBy String?
+  createdAt  DateTime @default(now())
+}
+
+// ─── SKILLS ───────────────────────────────────────────────
+model Skill {
+  id             String     @id @default(cuid())
+  name           String
+  description    String     @db.Text
+  icon           String     @default("🛠️")
+  persona        String     @default("consultant")
+  category       String     @default("custom")
+  promptTemplate String     @db.Text
+  variables      Json
+  isBuiltin      Boolean    @default(false)
+  createdBy      String?
+  usageCount     Int        @default(0)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  runs           SkillRun[]
+}
+
+model SkillRun {
+  id        String   @id @default(cuid())
+  skillId   String
+  skill     Skill    @relation(fields: [skillId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  inputs    Json
+  output    String   @db.Text
+  provider  String
+  model     String
+  createdAt DateTime @default(now())
 }
 
 // ─── CHAT MESSAGES ────────────────────────────────────────
@@ -140,9 +197,9 @@ model Message {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  persona   String   // consultant | designer | bod | techleader
-  role      String   // user | assistant
+  persona   String
+  role      String
   content   String   @db.Text
-  sessionId String   // group messages into conversation sessions
+  sessionId String
   createdAt DateTime @default(now())
 }

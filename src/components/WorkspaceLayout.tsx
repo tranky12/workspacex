@@ -10,15 +10,20 @@ const navItems = [
     { href: "/proposals", icon: "📐", label: "Proposal Builder", section: "tools" },
     { href: "/deals", icon: "🎯", label: "Deal Qualifier", section: "tools" },
     { href: "/clients", icon: "🔍", label: "Client Intelligence", section: "tools" },
+    { href: "/skills", icon: "🛠️", label: "Skills", section: "tools" },
     { href: "/knowledge", icon: "📚", label: "Knowledge Base", section: "library" },
+    { href: "/settings", icon: "⚙️", label: "Settings", section: "system" },
+    { href: "/setup", icon: "🚀", label: "Setup Guide", section: "system" },
 ]
+
 
 export default function WorkspaceLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(false)
     const pathname = usePathname()
     const { data: session } = useSession()
 
-    const sections: Record<string, string> = { workspace: "Workspace", tools: "Tools", library: "Library" }
+    const sections: Record<string, string> = { workspace: "Workspace", tools: "Tools", library: "Library", system: "System" }
+
     let lastSection = ""
 
     return (
@@ -118,7 +123,8 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
                     </div>
                     <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-emerald-400" style={{ boxShadow: "0 0 8px rgba(16,185,129,0.6)", animation: "pulse 2s infinite" }} />
-                        <span className="text-xs text-gray-500">Gemini Active</span>
+                        <span className="text-xs text-gray-500">AI Active</span>
+
                         <Link href="/knowledge" className="text-xs px-3 py-1.5 rounded-lg border text-gray-300 hover:text-white transition-colors"
                             style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)" }}>
                             📄 Upload Docs
