@@ -38,22 +38,28 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?
-  image         String?
-  role          String        @default("consultant")
-  accounts      Account[]
-  sessions      Session[]
-  deals         Deal[]
-  clients       Client[]
-  proposals     Proposal[]
-  messages      Message[]
-  settings      UserSettings?
-  skillRuns     SkillRun[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                 String              @id @default(cuid())
+  name               String?
+  email              String?             @unique
+  emailVerified      DateTime?
+  image              String?
+  role               String              @default("consultant") // system role: admin|consultant|viewer
+  accounts           Account[]
+  sessions           Session[]
+  deals              Deal[]
+  clients            Client[]
+  proposals          Proposal[]
+  messages           Message[]
+  settings           UserSettings?
+  skillRuns          SkillRun[]
+  workspaceMembers   WorkspaceMember[]
+  joinRequests       JoinRequest[]
+  ownedWorkspaces    Workspace[]         @relation("WorkspaceOwner")
+  assignedTasks      Task[]              @relation("TaskAssignee")
+  createdTasks       Task[]              @relation("TaskCreator")
+  projectMemberships ProjectMember[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
 }
 
 model VerificationToken {
@@ -62,6 +68,136 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// ─── WORKSPACE ────────────────────────────────────────────
+model Workspace {
+  id           String            @id @default(cuid())
+  name         String
+  slug         String            @unique
+  description  String?
+  logoUrl      String?
+  planType     String            @default("team") // free | team | enterprise
+  ownerId      String
+  owner        User              @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  members      WorkspaceMember[]
+  joinRequests JoinRequest[]
+  projects     Project[]
+  deals        Deal[]
+  clients      Client[]
+  knowledgeDocs KnowledgeDoc[]
+  settings     WorkspaceSettings?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model WorkspaceMember {
+  id          String    @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role        String    @default("member") // owner | admin | consultant | viewer
+  projectIds  String[]  // projects this member is assigned to
+  joinedAt    DateTime  @default(now())
+
+  @@unique([workspaceId, userId])
+}
+
+model JoinRequest {
+  id          String    @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  status      String    @default("pending") // pending | approved | rejected
+  message     String?
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([workspaceId, userId])
+}
+
+model WorkspaceSettings {
+  id              String    @id @default(cuid())
+  workspaceId     String    @unique
+  workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  // Shared integrations (workspace-level, override user settings)
+  slackBotToken   String?   @db.Text
+  slackWebhook    String?   @db.Text
+  slackChannelIds String[]  // channels the bot monitors
+  jiraHost        String?
+  jiraToken       String?   @db.Text
+  jiraProject     String?
+  driveFolderId   String?
+  // AI defaults
+  aiProvider      String    @default("gemini")
+  aiModel         String    @default("gemini-1.5-flash")
+  geminiApiKey    String?   @db.Text
+  openaiApiKey    String?   @db.Text
+  claudeApiKey    String?   @db.Text
+  // Report settings
+  bodReportDay    Int       @default(5) // 5 = Friday
+  bodReportEmail  String?
+  updatedAt       DateTime  @updatedAt
+}
+
+// ─── PROJECTS (internal + external) ───────────────────────
+model Project {
+  id          String          @id @default(cuid())
+  workspaceId String
+  workspace   Workspace       @relation(fields: [workspaceId], references: [id])
+  title       String
+  description String?         @db.Text
+  type        String          @default("external") // internal | external
+  status      String          @default("active")   // active | paused | completed | cancelled
+  priority    String          @default("medium")   // low | medium | high | urgent
+  ownerId     String
+  clientName  String?         // for external projects
+  dealValue   Float?
+  startDate   DateTime?
+  dueDate     DateTime?
+  tags        String[]
+  members     ProjectMember[]
+  tasks       Task[]
+  progress    Int             @default(0) // 0-100 %
+  slackChannelId String?
+  jiraProjectKey String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  role      String   @default("member") // lead | member | viewer
+  joinedAt  DateTime @default(now())
+
+  @@unique([projectId, userId])
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String?   @db.Text
+  status      String    @default("todo") // todo | in_progress | review | done
+  priority    String    @default("medium") // low | medium | high | urgent
+  assigneeId  String?
+  assignee    User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  creatorId   String?
+  creator     User?     @relation("TaskCreator", fields: [creatorId], references: [id])
+  dueDate     DateTime?
+  tags        String[]
+  slackRef    String?   // Slack message URL that created this task
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 // ─── USER AI SETTINGS ─────────────────────────────────────
@@ -85,34 +221,37 @@ model UserSettings {
   jiraToken     String?  @db.Text
   jiraProject   String?
   driveFolderId String?
+  currentWorkspaceId String?
   updatedAt     DateTime @updatedAt
 }
 
 // ─── DEALS / PIPELINE ─────────────────────────────────────
 model Deal {
-  id         String     @id @default(cuid())
-  title      String
-  company    String
-  value      Float      @default(0)
-  stage      String     @default("discovery")
-  industry   String?
-  solution   String?
-  score      Int        @default(0)
-  notes      String?    @db.Text
-  nextStep   String?
-  ownerId    String
-  owner      User       @relation(fields: [ownerId], references: [id])
-  clientId   String?
-  client     Client?    @relation(fields: [clientId], references: [id])
-  proposals  Proposal[]
-  meddicData Json?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id          String    @id @default(cuid())
+  title       String
+  company     String
+  value       Float     @default(0)
+  stage       String    @default("discovery")
+  industry    String?
+  solution    String?
+  score       Int       @default(0)
+  notes       String?   @db.Text
+  nextStep    String?
+  ownerId     String
+  owner       User      @relation(fields: [ownerId], references: [id])
+  clientId    String?
+  client      Client?   @relation(fields: [clientId], references: [id])
+  workspaceId String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  proposals   Proposal[]
+  meddicData  Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 // ─── CLIENTS ───────────────────────────────────────────────
 model Client {
-  id            String   @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String
   industry      String?
   size          String?
@@ -121,13 +260,15 @@ model Client {
   email         String?
   address       String?
   painPoints    String[]
-  maturityLevel Int      @default(2)
-  notes         String?  @db.Text
+  maturityLevel Int        @default(2)
+  notes         String?    @db.Text
   ownerId       String
-  owner         User     @relation(fields: [ownerId], references: [id])
+  owner         User       @relation(fields: [ownerId], references: [id])
+  workspaceId   String?
+  workspace     Workspace? @relation(fields: [workspaceId], references: [id])
   deals         Deal[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }
 
 // ─── PROPOSALS ────────────────────────────────────────────
@@ -148,17 +289,19 @@ model Proposal {
 
 // ─── KNOWLEDGE BASE ────────────────────────────────────────
 model KnowledgeDoc {
-  id         String   @id @default(cuid())
-  name       String
-  type       String
-  content    String   @db.Text
-  embedding  Float[]
-  category   String?
-  tags       String[]
-  fileSize   Int?
-  fileUrl    String?
-  uploadedBy String?
-  createdAt  DateTime @default(now())
+  id          String     @id @default(cuid())
+  name        String
+  type        String
+  content     String     @db.Text
+  embedding   Float[]
+  category    String?
+  tags        String[]
+  fileSize    Int?
+  fileUrl     String?
+  uploadedBy  String?
+  workspaceId String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  createdAt   DateTime   @default(now())
 }
 
 // ─── SKILLS ───────────────────────────────────────────────
@@ -202,4 +345,17 @@ model Message {
   content   String   @db.Text
   sessionId String
   createdAt DateTime @default(now())
+}
+
+// ─── REPORTS ──────────────────────────────────────────────
+model Report {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   @default("weekly_bod") // weekly_bod | deal_summary | project_status
+  workspaceId String?
+  content     String   @db.Text
+  data        Json?    // raw data snapshot
+  generatedBy String?
+  weekStart   DateTime?
+  createdAt   DateTime @default(now())
 }

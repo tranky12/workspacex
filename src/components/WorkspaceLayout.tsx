@@ -9,8 +9,11 @@ const navItems = [
     { href: "/chat", icon: "🧠", label: "Expert Panel", section: "workspace" },
     { href: "/proposals", icon: "📐", label: "Proposal Builder", section: "tools" },
     { href: "/deals", icon: "🎯", label: "Deal Qualifier", section: "tools" },
-    { href: "/clients", icon: "🔍", label: "Client Intelligence", section: "tools" },
+    { href: "/clients", icon: "🔍", label: "Client Intel", section: "tools" },
     { href: "/skills", icon: "🛠️", label: "Skills", section: "tools" },
+    { href: "/projects", icon: "🗂️", label: "Projects", section: "team" },
+    { href: "/workspace", icon: "🏢", label: "Workspace", section: "team" },
+    { href: "/reports", icon: "📊", label: "BOD Reports", section: "team" },
     { href: "/knowledge", icon: "📚", label: "Knowledge Base", section: "library" },
     { href: "/settings", icon: "⚙️", label: "Settings", section: "system" },
     { href: "/setup", icon: "🚀", label: "Setup Guide", section: "system" },
@@ -22,7 +25,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
     const pathname = usePathname()
     const { data: session } = useSession()
 
-    const sections: Record<string, string> = { workspace: "Workspace", tools: "Tools", library: "Library", system: "System" }
+    const sections: Record<string, string> = { workspace: "Workspace", tools: "Tools", team: "Team", library: "Library", system: "System" }
 
     let lastSection = ""
 

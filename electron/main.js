@@ -2,6 +2,11 @@ const { app, BrowserWindow, Menu, Tray, nativeImage, shell, dialog, Notification
 const path = require("path")
 const { spawn } = require("child_process")
 const waitOn = require("wait-on")
+const { autoUpdater } = require("electron-updater")
+
+// Configure auto-updater
+autoUpdater.autoDownload = true
+autoUpdater.autoInstallOnAppQuit = true
 
 const isDev = process.env.NODE_ENV === "development"
 const PORT = 3001
@@ -142,6 +147,56 @@ function createMenu() {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 }
 
+// ─── Auto-Update Events ────────────────────────────────────────
+function setupAutoUpdater() {
+    if (isDev) return // skip in dev mode
+
+    autoUpdater.on("checking-for-update", () => {
+        console.log("[AutoUpdate] Checking for update...")
+    })
+
+    autoUpdater.on("update-available", (info) => {
+        console.log("[AutoUpdate] Update available:", info.version)
+        if (Notification.isSupported()) {
+            new Notification({
+                title: "PresaleX Update Available",
+                body: `Version ${info.version} is downloading in the background...`,
+                icon: path.join(__dirname, "assets", "icon.png"),
+            }).show()
+        }
+    })
+
+    autoUpdater.on("update-not-available", () => {
+        console.log("[AutoUpdate] App is up to date.")
+    })
+
+    autoUpdater.on("update-downloaded", (info) => {
+        console.log("[AutoUpdate] Update downloaded:", info.version)
+        const response = dialog.showMessageBoxSync(mainWindow, {
+            type: "info",
+            title: "Update Ready — PresaleX",
+            message: `Version ${info.version} is ready to install.`,
+            detail: "Restart now to apply the update, or wait until next launch.",
+            buttons: ["Restart Now", "Later"],
+            defaultId: 0,
+        })
+        if (response === 0) {
+            autoUpdater.quitAndInstall()
+        }
+    })
+
+    autoUpdater.on("error", (err) => {
+        console.error("[AutoUpdate] Error:", err.message)
+    })
+
+    // Check for updates 5 seconds after launch
+    setTimeout(() => {
+        autoUpdater.checkForUpdates().catch(err => {
+            console.log("[AutoUpdate] Could not check:", err.message)
+        })
+    }, 5000)
+}
+
 // ─── App Events ────────────────────────────────────────────────
 app.whenReady().then(async () => {
     try {
@@ -150,6 +205,7 @@ app.whenReady().then(async () => {
         createWindow()
         createTray()
         createMenu()
+        setupAutoUpdater()
     } catch (err) {
         console.error("Failed to start:", err)
         dialog.showErrorBox("PresaleX Error", `Failed to start: ${err.message}`)
