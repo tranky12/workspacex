@@ -1,7 +1,7 @@
 # PresaleX — SC&L Expert Workspace
 
 > Professional presale solution support workspace for Supply Chain & Logistics teams.
-> Built with Next.js 14, Google OAuth, Gemini AI, Supabase, and file intelligence.
+> Built with Next.js (App Router), Google OAuth, Gemini AI, Supabase, and file intelligence.
 
 ## 🚀 Phase 1 Features
 - **Google OAuth** — Team sign-in via Google account
@@ -14,20 +14,21 @@
 ## 🛠️ Tech Stack
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js 14 (App Router) + TypeScript + Tailwind CSS |
+| Frontend | Next.js 16 (App Router) + TypeScript + Tailwind CSS |
 | Auth | NextAuth.js v5 + Google OAuth |
 | AI | Google Gemini 1.5 Pro |
 | Database | Supabase (PostgreSQL + pgvector) |
 | ORM | Prisma |
 | File Parsing | pdf-parse + mammoth (DOCX) + pptxgenjs |
-| Deploy | Vercel |
+| Desktop | Electron + electron-builder (DMG / NSIS) |
+| Deploy | Vercel (web) · [GitHub Releases](https://github.com/tranky12/workspacex/releases) (desktop) |
 
 ## ⚙️ Setup
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/tranky12/presalex-workspace.git
-cd presalex-workspace
+git clone https://github.com/tranky12/workspacex.git
+cd workspacex
 npm install
 ```
 
@@ -47,7 +48,7 @@ npx prisma db push
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3001](http://localhost:3001) (dev server port is **3001**).
 
 ## 🔑 Environment Variables (`.env.local`)
 ```
@@ -87,11 +88,41 @@ src/
 └── prisma/               # Database schema
 ```
 
-## 📋 Roadmap
-- [x] Phase 1: Next.js + Auth + Gemini AI + File Upload
-- [ ] Phase 2: Google Drive, Slack, Jira integrations
-- [ ] Phase 3: Smartlog template engine + PPTX export
-- [ ] Phase 4: Multi-user, roles, production deploy
+## 📋 Roadmap (this repo: [tranky12/workspacex](https://github.com/tranky12/workspacex))
+- [x] **Phase 1** — Next.js + Auth + Gemini AI + file upload + core workspace
+- [x] **Desktop** — Electron app + CI builds + [GitHub Releases](https://github.com/tranky12/workspacex/releases) (DMG / Windows installer)
+- [ ] **Phase 2** — Integrations: Slack / Jira / Google Drive (API routes exist; OAuth UX, error handling, and coverage still in progress)
+- [ ] **Phase 3** — Smartlog template engine + richer PPTX export
+- [ ] **Phase 4** — Multi-tenant polish, roles, production hardening
+
+## 🔐 Desktop builds: code signing (optional)
+
+CI builds are **unsigned** by default. To produce **signed** macOS (Developer ID + **notarization**) and **Authenticode** Windows installers:
+
+1. In GitHub → **Settings → Secrets and variables → Actions → Variables**, add:
+   - **`ENABLE_CODE_SIGNING`** = `true`
+
+2. In **Secrets**, add (names must match exactly):
+
+   | Secret | Purpose |
+   |--------|---------|
+   | `MACOS_CERT_P12` | Base64-encoded **Developer ID Application** `.p12` |
+   | `MACOS_CERT_PASSWORD` | Password for the `.p12` |
+   | `APPLE_ID` | Apple ID email (notarization) |
+   | `APPLE_APP_SPECIFIC_PASSWORD` | [App-specific password](https://support.apple.com/en-us/102654) for notarization |
+   | `APPLE_TEAM_ID` | 10-character Apple Team ID |
+   | `WINDOWS_CERT_PFX` | Base64-encoded **Authenticode** `.pfx` |
+   | `WINDOWS_CERT_PASSWORD` | Password for the `.pfx` |
+
+3. The release workflow merges `electron-builder.json` with **`electron-builder.signing.json`** when `ENABLE_CODE_SIGNING` is `true` (enables hardened runtime + notarize on macOS, Authenticode on Windows).
+
+4. **Local** signed builds (after exporting the same env vars and decoding certs to disk):
+   ```bash
+   export CSC_LINK=/absolute/path/to/DeveloperID.p12
+   export CSC_KEY_PASSWORD=...
+   export APPLE_ID=... APPLE_APP_SPECIFIC_PASSWORD=... APPLE_TEAM_ID=...
+   npx electron-builder --mac -c electron-builder.json -c electron-builder.signing.json --publish never
+   ```
 
 ## 🏗️ Legacy Demo
 The original HTML/CSS/JS demo is preserved in `/legacy/` for reference.

@@ -1,0 +1,12 @@
+{
+    "mac": {
+        "hardenedRuntime": true,
+        "gatekeeperAssess": true,
+        "entitlements": "electron/entitlements.mac.plist",
+        "entitlementsInherit": "electron/entitlements.mac.plist",
+        "notarize": true
+    },
+    "win": {
+        "signingHashAlgorithms": ["sha256"]
+    }
+}

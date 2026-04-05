@@ -21,7 +21,6 @@ env:
   AUTH_GOOGLE_ID: ci-build-placeholder-google-id
   AUTH_GOOGLE_SECRET: ci-build-placeholder-google-secret
   NEXTAUTH_URL: http://127.0.0.1:3001
-  CSC_IDENTITY_AUTO_SELECT: false
 
 jobs:
   build-macos:
@@ -45,8 +44,25 @@ jobs:
       - name: Build Next.js App
         run: npm run build
 
+      - name: Setup macOS code signing + notarization (optional)
+        if: vars.ENABLE_CODE_SIGNING == 'true'
+        run: |
+          echo "${{ secrets.MACOS_CERT_P12 }}" | base64 --decode > mac.p12
+          echo "CSC_LINK=${GITHUB_WORKSPACE}/mac.p12" >> "$GITHUB_ENV"
+          echo "CSC_KEY_PASSWORD=${{ secrets.MACOS_CERT_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "CSC_IDENTITY_AUTO_SELECT=true" >> "$GITHUB_ENV"
+
       - name: Build Electron (macOS DMG)
-        run: npx electron-builder --mac -c electron-builder.json --publish never
+        run: |
+          if [ "${{ vars.ENABLE_CODE_SIGNING }}" = "true" ]; then
+            npx electron-builder --mac -c electron-builder.json -c electron-builder.signing.json --publish never
+          else
+            npx electron-builder --mac -c electron-builder.json --publish never
+          fi
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Upload DMG artifacts
         uses: actions/upload-artifact@v4
@@ -76,8 +92,23 @@ jobs:
       - name: Build Next.js App
         run: npm run build
 
+      - name: Setup Windows Authenticode (optional)
+        if: vars.ENABLE_CODE_SIGNING == 'true'
+        shell: bash
+        run: |
+          echo "${{ secrets.WINDOWS_CERT_PFX }}" | base64 -d > cert.pfx
+          echo "CSC_LINK=${GITHUB_WORKSPACE}/cert.pfx" >> "$GITHUB_ENV"
+          echo "CSC_KEY_PASSWORD=${{ secrets.WINDOWS_CERT_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "CSC_IDENTITY_AUTO_SELECT=true" >> "$GITHUB_ENV"
+
       - name: Build Electron (Windows NSIS)
-        run: npx electron-builder --win -c electron-builder.json --publish never
+        shell: bash
+        run: |
+          if [ "${{ vars.ENABLE_CODE_SIGNING }}" = "true" ]; then
+            npx electron-builder --win -c electron-builder.json -c electron-builder.signing.json --publish never
+          else
+            npx electron-builder --win -c electron-builder.json --publish never
+          fi
 
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
