@@ -3,30 +3,29 @@ name: Release PresaleX Desktop App
 on:
   push:
     tags:
-      - 'v*' # Trigger on tags like v1.0.0
-  workflow_dispatch: # Allow manual trigger
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git tag cho bản phát hành (khớp version trong package.json, ví dụ v2.0.3)'
+        required: true
+        default: 'v2.0.3'
 
 permissions:
   contents: write
 
-# Build-only placeholders — real secrets belong in .env locally / repo Secrets for deploys.
+# Build-only placeholders — production dùng .env / GitHub Secrets thật.
 env:
   DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci
   AUTH_SECRET: ci-build-placeholder-use-real-secret-in-production-32chars
   AUTH_GOOGLE_ID: ci-build-placeholder-google-id
   AUTH_GOOGLE_SECRET: ci-build-placeholder-google-secret
   NEXTAUTH_URL: http://127.0.0.1:3001
-  # Unsigned local/CI builds (add APPLE_* / WINDOWS_* secrets when you have signing certs)
   CSC_IDENTITY_AUTO_SELECT: false
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest]
-        
+  build-macos:
+    runs-on: macos-latest
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
@@ -46,14 +45,80 @@ jobs:
       - name: Build Next.js App
         run: npm run build
 
-      - name: Build/Release Electron App (Mac)
-        if: matrix.os == 'macos-latest'
-        run: npx electron-builder --mac -c electron-builder.json --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Build/Release Electron App (Windows)
-        if: matrix.os == 'windows-latest'
-        run: npx electron-builder --win -c electron-builder.json --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Electron (macOS DMG)
+        run: npx electron-builder --mac -c electron-builder.json --publish never
+
+      - name: Upload DMG artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-dmg
+          path: dist/*.dmg
+          if-no-files-found: error
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Build Next.js App
+        run: npm run build
+
+      - name: Build Electron (Windows NSIS)
+        run: npx electron-builder --win -c electron-builder.json --publish never
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: win-installer
+          path: dist/*.exe
+          if-no-files-found: error
+
+  publish-release:
+    needs: [build-macos, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve release tag
+        id: meta
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            TAG="${{ github.ref_name }}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Publishing release for tag: $TAG"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: release-assets
+
+      - name: List release files
+        run: ls -laR release-assets
+
+      - name: Create GitHub Release with DMG + EXE
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: PresaleX ${{ steps.meta.outputs.tag }}
+          draft: false
+          make_latest: true
+          generate_release_notes: true
+          target_commitish: ${{ github.sha }}
+          files: |
+            release-assets/*.dmg
+            release-assets/*.exe
