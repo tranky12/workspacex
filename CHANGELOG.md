@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.3] - 2026-04-05
+
+### Desktop — logo app
+- Icon **1024×1024** vuông (crop giữa + resize) để không bị méo trên Dock / taskbar.
+- Nhận diện mới: nền tối, họa tiết C / mạng nút kiểu 3D, phù hợp bo góc hệ thống trên macOS.
+
+---
+
 ## [2.2.2] - 2026-04-05
 
 ### System health (tự kiểm tra trước khi đăng nhập)
