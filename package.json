@@ -2,6 +2,11 @@
   "name": "workspacex",
   "version": "2.0.0",
   "description": "WORKSPACEX — Multi-tenant AI Workspace Platform | Powered by Gemini AI",
+  "author": "Smartlog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tranky12/workspacex.git"
+  },
   "main": "electron/main.js",
   "private": true,
   "scripts": {

@@ -119,7 +119,7 @@ function createMenu() {
         {
             label: "PresaleX",
             submenu: [
-                { label: "About PresaleX", click: () => { dialog.showMessageBox({ title: "PresaleX", message: "PresaleX v1.0.0\nSC&L Expert Workspace\n\nPowered by Gemini AI", detail: "Professional presale support for Supply Chain & Logistics teams." }) } },
+                { label: "About PresaleX", click: () => { dialog.showMessageBox({ title: "PresaleX", message: "PresaleX v2.0.0\nSC&L Expert Workspace\n\nPowered by Gemini AI", detail: "Professional presale support for Supply Chain & Logistics teams." }) } },
                 { type: "separator" },
                 { role: "quit" },
             ],

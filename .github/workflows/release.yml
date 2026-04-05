@@ -9,6 +9,16 @@ on:
 permissions:
   contents: write
 
+# Build-only placeholders — real secrets belong in .env locally / repo Secrets for deploys.
+env:
+  DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci
+  AUTH_SECRET: ci-build-placeholder-use-real-secret-in-production-32chars
+  AUTH_GOOGLE_ID: ci-build-placeholder-google-id
+  AUTH_GOOGLE_SECRET: ci-build-placeholder-google-secret
+  NEXTAUTH_URL: http://127.0.0.1:3001
+  # Unsigned local/CI builds (add APPLE_* / WINDOWS_* secrets when you have signing certs)
+  CSC_IDENTITY_AUTO_SELECT: false
+
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -25,9 +35,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Generate Prisma Client
         run: npx prisma generate
