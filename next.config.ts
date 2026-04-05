@@ -7,10 +7,6 @@ const nextConfig: NextConfig = {
   },
   // Exclude server-only packages from Edge/client bundles
   serverExternalPackages: ["@prisma/client", "prisma", "pdf-parse", "mammoth"],
-  // @ts-ignore
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 export default nextConfig;

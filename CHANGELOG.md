@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.4] - 2026-04-05
+
+### Ổn định & vận hành
+- **next.config:** bỏ `eslint` (Next 16 không còn hỗ trợ key này) — hết cảnh báo build.
+- **Electron:** nạp `dotenv` từ `.env.local` / `.env` trong thư mục app trước `next start`; kiểm tra tồn tại file Next CLI; timeout chờ HTTP 90s; xử lý thoát process Next sớm; tránh `reject` trùng.
+- **API `/api/health`:** `try/catch` toàn route; import Prisma động khi cần; JSON lỗi 500 có `error`.
+- **Middleware:** cho phép **`/setup`** không đăng nhập (đọc hướng dẫn).
+- **Prisma `pg` Pool:** `connectionTimeoutMillis` 10s.
+- **README:** hướng dẫn đặt `.env` cho bản desktop.
+
+---
+
 ## [2.2.3] - 2026-04-05
 
 ### Desktop — logo app

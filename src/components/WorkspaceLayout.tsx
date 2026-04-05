@@ -28,8 +28,6 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
 
     const sections: Record<string, string> = { workspace: "Workspace", tools: "Tools", team: "Team", library: "Library", system: "System" }
 
-    let lastSection = ""
-
     return (
         <div className="flex min-h-screen">
             {/* Sidebar */}
@@ -57,9 +55,9 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
 
                 {/* Nav */}
                 <nav className="flex-1 overflow-y-auto py-3">
-                    {navItems.map((item) => {
-                        const showSection = !collapsed && item.section !== lastSection
-                        if (showSection) lastSection = item.section
+                    {navItems.map((item, idx) => {
+                        const prev = idx > 0 ? navItems[idx - 1] : null
+                        const showSection = !collapsed && (!prev || prev.section !== item.section)
                         const active = pathname === item.href
 
                         return (

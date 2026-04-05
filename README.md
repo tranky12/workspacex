@@ -105,6 +105,9 @@ src/
 - [ ] **Phase 3** — Smartlog template engine + richer PPTX export
 - [ ] **Phase 4** — SSOT master data cấp org, enforcement permissions trên mọi API, production hardening
 
+### Desktop (Electron): cấu hình `.env`
+Ứng dụng đóng gói đọc **`.env.local`** hoặc **`.env`** nằm **cùng thư mục** với `package.json` trong bundle (trên macOS: `COSPACEX.app/Contents/Resources/app/`). Đặt `DATABASE_URL`, `AUTH_*`, `NEXTAUTH_URL`, v.v. giống khi chạy web — nếu thiếu, dùng trang **`/health`** để kiểm tra.
+
 ## 🔐 Desktop builds: code signing (optional)
 
 CI builds are **unsigned** by default. To produce **signed** macOS (Developer ID + **notarization**) and **Authenticode** Windows installers:

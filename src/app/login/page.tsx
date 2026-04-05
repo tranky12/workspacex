@@ -56,7 +56,7 @@ export default async function LoginPage() {
                     <div>
                         <a href="/health" className="text-cyan-500/80 hover:text-cyan-400">Kiểm tra hệ thống (DB &amp; env)</a>
                     </div>
-                    <div>COSPACEX v2.2.3 · Powered by Gemini AI · Smartlog &copy; 2026</div>
+                    <div>COSPACEX v2.2.4 · Powered by Gemini AI · Smartlog &copy; 2026</div>
                 </div>
             </div>
         </div>

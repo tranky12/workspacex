@@ -7,13 +7,14 @@ type HealthPayload = {
     app: string
     version: string
     timestamp: string
-    checks: {
+    error?: string
+    checks?: {
         database: { status: "ok" | "error" | "skipped"; message?: string }
         env: Record<string, boolean>
         authConfigured: boolean
         aiConfigured: boolean
     }
-    hints: { login: string | null; database: string | null }
+    hints?: { login: string | null; database: string | null }
 }
 
 function Row({ label, ok, detail }: { label: string; ok: boolean; detail?: string }) {
@@ -55,7 +56,7 @@ export default function HealthPage() {
                 {loading && <p className="text-sm text-gray-400">Đang kiểm tra…</p>}
                 {err && <p className="text-sm text-red-400 mb-4">{err}</p>}
 
-                {data && (
+                {data && data.checks && (
                     <>
                         <div className="text-xs text-gray-500 font-mono mb-4">
                             {data.app} v{data.version} · {new Date(data.timestamp).toLocaleString()}
@@ -74,8 +75,8 @@ export default function HealthPage() {
                         </div>
 
                         <div className="mt-6 space-y-2 text-xs text-gray-400">
-                            {data.hints.database && <p>DB: {data.hints.database}</p>}
-                            {data.hints.login && <p>Đăng nhập: {data.hints.login}</p>}
+                            {data.hints?.database && <p>DB: {data.hints.database}</p>}
+                            {data.hints?.login && <p>Đăng nhập: {data.hints.login}</p>}
                         </div>
 
                         <div className="mt-8 flex flex-wrap gap-3">

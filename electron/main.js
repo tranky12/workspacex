@@ -1,7 +1,9 @@
 const { app, BrowserWindow, Menu, Tray, nativeImage, shell, dialog, Notification } = require("electron")
 const path = require("path")
+const fs = require("fs")
 const http = require("http")
 const { spawn } = require("child_process")
+const dotenv = require("dotenv")
 const { autoUpdater } = require("electron-updater")
 
 const pkg = require(path.join(__dirname, "..", "package.json"))
@@ -78,7 +80,21 @@ function startNextServer() {
 
     return new Promise((resolve, reject) => {
         const appDir = getAppRoot()
+        const envLocal = path.join(appDir, ".env.local")
+        const envPlain = path.join(appDir, ".env")
+        if (fs.existsSync(envLocal)) {
+            dotenv.config({ path: envLocal })
+        } else if (fs.existsSync(envPlain)) {
+            dotenv.config({ path: envPlain })
+        }
+
         const nextBin = path.join(appDir, "node_modules", "next", "dist", "bin", "next")
+        if (!fs.existsSync(nextBin)) {
+            reject(new Error(`Không tìm thấy Next.js tại:\n${nextBin}\nHãy build lại ứng dụng (electron-builder).`))
+            return
+        }
+
+        let settled = false
 
         nextServer = spawn(process.execPath, [nextBin, "start", "--port", String(PORT)], {
             cwd: appDir,
@@ -99,11 +115,30 @@ function startNextServer() {
             console.error("[Next.js err]", data.toString().trim())
         })
 
-        nextServer.on("error", reject)
+        nextServer.on("error", err => {
+            if (!settled) {
+                settled = true
+                reject(err)
+            }
+        })
 
-        waitForHttpServer(NEXT_URL, 60000)
-            .then(resolve)
-            .catch(reject)
+        nextServer.on("exit", (code, signal) => {
+            if (settled) return
+            settled = true
+            reject(new Error(`Next.js thoát sớm (code ${code}, signal ${signal || "none"}). Xem log phía trên hoặc /health.`))
+        })
+
+        waitForHttpServer(NEXT_URL, 90000)
+            .then(() => {
+                settled = true
+                resolve()
+            })
+            .catch(err => {
+                if (!settled) {
+                    settled = true
+                    reject(err)
+                }
+            })
     })
 }
 
