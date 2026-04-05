@@ -1,6 +1,6 @@
 {
-    "appId": "com.smartlog.presalex",
-    "productName": "PresaleX",
+    "appId": "com.smartlog.cospacex",
+    "productName": "COSPACEX",
     "copyright": "Copyright © 2026 Smartlog",
     "icon": "electron/assets/icon.png",
     "files": [
@@ -53,10 +53,10 @@
         "allowToChangeInstallationDirectory": true,
         "createDesktopShortcut": true,
         "createStartMenuShortcut": true,
-        "shortcutName": "PresaleX"
+        "shortcutName": "COSPACEX"
     },
     "dmg": {
-        "title": "Install PresaleX",
+        "title": "Install COSPACEX",
         "icon": "electron/assets/icon.png",
         "contents": [
             {

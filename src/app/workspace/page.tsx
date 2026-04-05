@@ -127,7 +127,7 @@ export default function WorkspacePage() {
                         <div>
                             <label className="block text-xs text-gray-400 mb-1">Workspace Name *</label>
                             <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                                placeholder="e.g. Smartlog Presale Team"
+                                placeholder="e.g. Smartlog COSPACEX Team"
                                 className="w-full rounded-xl px-4 py-2.5 text-sm text-white border outline-none"
                                 style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)" }} />
                         </div>

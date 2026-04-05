@@ -2,7 +2,7 @@ export default function SetupGuidePage() {
     return (
         <div className="max-w-3xl">
             <h1 className="text-3xl font-bold text-white font-playfair mb-1">Setup Guide</h1>
-            <p className="text-gray-400 text-sm mb-8">Follow these steps to fully activate PresaleX for your team.</p>
+            <p className="text-gray-400 text-sm mb-8">Follow these steps to fully activate COSPACEX for your team.</p>
 
             <div className="space-y-5">
                 {/* Step 1 */}

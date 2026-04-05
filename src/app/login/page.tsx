@@ -14,7 +14,7 @@ export default async function LoginPage() {
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style={{ background: "linear-gradient(135deg, #00d4aa, #3b82f6)", boxShadow: "0 0 30px rgba(0,212,170,0.3)" }}>
                         <span className="text-3xl">⟡</span>
                     </div>
-                    <h1 className="text-3xl font-bold text-white font-playfair mb-2">PresaleX</h1>
+                    <h1 className="text-3xl font-bold text-white font-playfair mb-2">COSPACEX</h1>
                     <p className="text-sm text-gray-400 uppercase tracking-widest">SC&amp;L Expert Workspace</p>
                 </div>
 
@@ -46,14 +46,14 @@ export default async function LoginPage() {
                     </form>
 
                     <div className="mt-6 pt-6 border-t text-xs text-gray-500 text-center" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                        Chỉ dành cho thành viên team Smartlog / PresaleX.<br />
+                        Chỉ dành cho thành viên team Smartlog / COSPACEX.<br />
                         Sử dụng email công ty để đăng nhập.
                     </div>
                 </div>
 
                 {/* Footer */}
                 <div className="text-center mt-6 text-xs text-gray-600">
-                    PresaleX v1.0 · Powered by Gemini AI · Smartlog &copy; 2026
+                    COSPACEX v2.1 · Powered by Gemini AI · Smartlog &copy; 2026
                 </div>
             </div>
         </div>

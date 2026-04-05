@@ -65,7 +65,7 @@ export default function ProposalPage() {
             const url = URL.createObjectURL(blob)
             const a = document.createElement("a")
             a.href = url
-            a.download = `PresaleX-${company || "proposal"}-${template}-${new Date().toISOString().split("T")[0]}.pptx`
+            a.download = `COSPACEX-${company || "proposal"}-${template}-${new Date().toISOString().split("T")[0]}.pptx`
             a.click()
             URL.revokeObjectURL(url)
         } catch (err) {

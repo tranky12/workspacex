@@ -1,4 +1,4 @@
-# PresaleX — SC&L Expert Workspace
+# COSPACEX — SC&L Expert Workspace
 
 > Professional presale solution support workspace for Supply Chain & Logistics teams.
 > Built with Next.js (App Router), Google OAuth, Gemini AI, Supabase, and file intelligence.
@@ -128,4 +128,4 @@ CI builds are **unsigned** by default. To produce **signed** macOS (Developer ID
 The original HTML/CSS/JS demo is preserved in `/legacy/` for reference.
 
 ## License
-Private — Smartlog / PresaleX Team
+Private — Smartlog / COSPACEX Team

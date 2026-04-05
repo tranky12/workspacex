@@ -6,7 +6,7 @@ import { chat } from "@/lib/ai-providers"
 // This endpoint handles:
 // 1. URL verification (challenge)
 // 2. message.channels events → AI extracts task/deal info → creates Tasks
-// 3. slash commands: /presalex
+// 3. slash commands: /cospacex
 export async function POST(req: NextRequest) {
     const body = await req.json()
 

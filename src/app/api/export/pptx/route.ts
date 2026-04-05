@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
         const pptx = new PptxGenJS()
 
         // Branding
-        pptx.title = title || "Presale Proposal"
+        pptx.title = title || "COSPACEX Proposal"
         pptx.subject = "SC&L Solution Proposal"
-        pptx.author = "PresaleX"
+        pptx.author = "COSPACEX"
         pptx.company = "Smartlog"
 
         // Layout
@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
 
         // Generate buffer
         const buffer = await pptx.write({ outputType: "arraybuffer" }) as ArrayBuffer
-        const filename = `PresaleX-${(company || "proposal").replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.pptx`
+        const filename = `COSPACEX-${(company || "proposal").replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.pptx`
 
         if (saveToDrive) {
             // Get user's Google access token

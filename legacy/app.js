@@ -1,5 +1,5 @@
 /* ===================================================
-   PresaleX — SC&L Expert Workspace
+   COSPACEX — SC&L Expert Workspace
    app.js — Application Logic
 =================================================== */
 
@@ -570,7 +570,7 @@ function init() {
   renderMEDDIC();
 
   // Welcome toast after short delay
-  setTimeout(() => showToast('Workspace ready — Chào mừng đến PresaleX! 👋', '⟡'), 800);
+  setTimeout(() => showToast('Workspace ready — Chào mừng đến COSPACEX! 👋', '⟡'), 800);
 }
 
 init();

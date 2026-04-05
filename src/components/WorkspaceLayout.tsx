@@ -48,7 +48,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
                     </div>
                     {!collapsed && (
                         <div>
-                            <div className="text-sm font-bold text-white">PresaleX</div>
+                            <div className="text-sm font-bold text-white">COSPACEX</div>
                             <div className="text-[10px] text-cyan-400 uppercase tracking-widest">SC&L Expert</div>
                         </div>
                     )}
@@ -121,7 +121,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
                     style={{ background: "rgba(6,12,26,0.9)", borderColor: "rgba(255,255,255,0.06)", backdropFilter: "blur(20px)" }}>
                     <div className="flex-1">
                         <h1 className="text-lg font-bold text-white font-playfair">
-                            {navItems.find(n => n.href === pathname)?.label || "PresaleX"}
+                            {navItems.find(n => n.href === pathname)?.label || "COSPACEX"}
                         </h1>
                     </div>
                     <div className="flex items-center gap-3">

@@ -1,8 +1,16 @@
 const { app, BrowserWindow, Menu, Tray, nativeImage, shell, dialog, Notification } = require("electron")
 const path = require("path")
+const http = require("http")
 const { spawn } = require("child_process")
-const waitOn = require("wait-on")
 const { autoUpdater } = require("electron-updater")
+
+const pkg = require(path.join(__dirname, "..", "package.json"))
+const APP_NAME = "COSPACEX"
+const APP_VERSION = pkg.version || "2.1.0"
+
+if (process.platform === "win32") {
+    app.setAppUserModelId("com.smartlog.cospacex")
+}
 
 // Configure auto-updater
 autoUpdater.autoDownload = true
@@ -15,6 +23,47 @@ const NEXT_URL = `http://localhost:${PORT}`
 let mainWindow = null
 let tray = null
 let nextServer = null
+
+/** Wait until Next.js responds — uses Node http only (no extra deps; works inside app.asar). */
+function waitForHttpServer(urlStr, timeoutMs = 60000) {
+    return new Promise((resolve, reject) => {
+        const start = Date.now()
+        const poll = () => {
+            const u = new URL(urlStr)
+            const port = u.port ? Number(u.port) : (u.protocol === "https:" ? 443 : 80)
+            const req = http.request(
+                {
+                    hostname: u.hostname,
+                    port,
+                    path: u.pathname || "/",
+                    method: "GET",
+                    timeout: 2500,
+                },
+                (res) => {
+                    res.resume()
+                    resolve()
+                }
+            )
+            req.on("error", () => {
+                if (Date.now() - start >= timeoutMs) {
+                    reject(new Error(`Timeout waiting for ${urlStr}`))
+                } else {
+                    setTimeout(poll, 350)
+                }
+            })
+            req.on("timeout", () => {
+                req.destroy()
+                if (Date.now() - start >= timeoutMs) {
+                    reject(new Error(`Timeout waiting for ${urlStr}`))
+                } else {
+                    setTimeout(poll, 350)
+                }
+            })
+            req.end()
+        }
+        poll()
+    })
+}
 
 // ─── Start Next.js server ───────────────────────────────────────
 function startNextServer() {
@@ -45,8 +94,7 @@ function startNextServer() {
 
         nextServer.on("error", reject)
 
-        // Wait for Next.js to be ready
-        waitOn({ resources: [NEXT_URL], timeout: 60000 })
+        waitForHttpServer(NEXT_URL, 60000)
             .then(resolve)
             .catch(reject)
     })
@@ -59,6 +107,7 @@ function createWindow() {
         height: 900,
         minWidth: 1024,
         minHeight: 700,
+        title: APP_NAME,
         titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
         backgroundColor: "#060C1A",
         icon: path.join(__dirname, "assets", "icon.png"),
@@ -77,7 +126,6 @@ function createWindow() {
         if (isDev) mainWindow.webContents.openDevTools({ mode: "detach" })
     })
 
-    // Open external links in browser, not in app
     mainWindow.webContents.setWindowOpenHandler(({ url }) => {
         if (!url.startsWith(NEXT_URL)) {
             shell.openExternal(url)
@@ -96,16 +144,16 @@ function createTray() {
         tray = new Tray(trayIcon.resize({ width: 16, height: 16 }))
 
         const contextMenu = Menu.buildFromTemplate([
-            { label: "PresaleX", enabled: false },
+            { label: APP_NAME, enabled: false },
             { type: "separator" },
             { label: "Show App", click: () => { if (mainWindow) { mainWindow.show(); mainWindow.focus() } else { createWindow() } } },
             { label: "New Deal", click: () => { if (mainWindow) { mainWindow.show(); mainWindow.loadURL(`${NEXT_URL}/deals`) } } },
             { label: "Expert Panel", click: () => { if (mainWindow) { mainWindow.show(); mainWindow.loadURL(`${NEXT_URL}/chat`) } } },
             { type: "separator" },
-            { label: "Quit PresaleX", click: () => { app.quit() } },
+            { label: `Quit ${APP_NAME}`, click: () => { app.quit() } },
         ])
 
-        tray.setToolTip("PresaleX — SC&L Expert Workspace")
+        tray.setToolTip(`${APP_NAME} — SC&L Expert Workspace`)
         tray.setContextMenu(contextMenu)
         tray.on("click", () => { if (mainWindow) { mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show() } })
     } catch {
@@ -117,9 +165,18 @@ function createTray() {
 function createMenu() {
     const template = [
         {
-            label: "PresaleX",
+            label: APP_NAME,
             submenu: [
-                { label: "About PresaleX", click: () => { dialog.showMessageBox({ title: "PresaleX", message: "PresaleX v2.0.3\nSC&L Expert Workspace\n\nPowered by Gemini AI", detail: "Professional presale support for Supply Chain & Logistics teams." }) } },
+                {
+                    label: `About ${APP_NAME}`,
+                    click: () => {
+                        dialog.showMessageBox({
+                            title: APP_NAME,
+                            message: `${APP_NAME} v${APP_VERSION}\nSC&L Expert Workspace\n\nPowered by Gemini AI`,
+                            detail: "Professional presale support for Supply Chain & Logistics teams.",
+                        })
+                    },
+                },
                 { type: "separator" },
                 { role: "quit" },
             ],
@@ -150,7 +207,7 @@ function createMenu() {
 
 // ─── Auto-Update Events ────────────────────────────────────────
 function setupAutoUpdater() {
-    if (isDev) return // skip in dev mode
+    if (isDev) return
 
     autoUpdater.on("checking-for-update", () => {
         console.log("[AutoUpdate] Checking for update...")
@@ -160,7 +217,7 @@ function setupAutoUpdater() {
         console.log("[AutoUpdate] Update available:", info.version)
         if (Notification.isSupported()) {
             new Notification({
-                title: "PresaleX Update Available",
+                title: `${APP_NAME} update available`,
                 body: `Version ${info.version} is downloading in the background...`,
                 icon: path.join(__dirname, "assets", "icon.png"),
             }).show()
@@ -175,7 +232,7 @@ function setupAutoUpdater() {
         console.log("[AutoUpdate] Update downloaded:", info.version)
         const response = dialog.showMessageBoxSync(mainWindow, {
             type: "info",
-            title: "Update Ready — PresaleX",
+            title: `Update ready — ${APP_NAME}`,
             message: `Version ${info.version} is ready to install.`,
             detail: "Restart now to apply the update, or wait until next launch.",
             buttons: ["Restart Now", "Later"],
@@ -190,7 +247,6 @@ function setupAutoUpdater() {
         console.error("[AutoUpdate] Error:", err.message)
     })
 
-    // Check for updates 5 seconds after launch
     setTimeout(() => {
         autoUpdater.checkForUpdates().catch(err => {
             console.log("[AutoUpdate] Could not check:", err.message)
@@ -201,7 +257,7 @@ function setupAutoUpdater() {
 // ─── App Events ────────────────────────────────────────────────
 app.whenReady().then(async () => {
     try {
-        console.log("Starting PresaleX...")
+        console.log(`Starting ${APP_NAME}...`)
         await startNextServer()
         createWindow()
         createTray()
@@ -209,7 +265,7 @@ app.whenReady().then(async () => {
         setupAutoUpdater()
     } catch (err) {
         console.error("Failed to start:", err)
-        dialog.showErrorBox("PresaleX Error", `Failed to start: ${err.message}`)
+        dialog.showErrorBox(`${APP_NAME} error`, `Failed to start: ${err.message}`)
         app.quit()
     }
 })

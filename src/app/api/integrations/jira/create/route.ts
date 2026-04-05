@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const payload = {
         fields: {
             project: { key: userSettings.jiraProject },
-            summary: summary || (deal ? `[PresaleX] ${deal.title} — ${deal.company}` : "New deal from PresaleX"),
+            summary: summary || (deal ? `[COSPACEX] ${deal.title} — ${deal.company}` : "New deal from COSPACEX"),
             description: {
                 type: "doc", version: 1,
                 content: [{
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
                         type: "text",
                         text: description || (deal
                             ? `Deal won: ${deal.title}\nCompany: ${deal.company}\nValue: $${(deal.value || 0).toLocaleString()}\nSolution: ${deal.solution || "TBD"}\nMEDDIC Score: ${deal.score}/100`
-                            : "New presale deal created from PresaleX workspace.")
+                            : "New presale deal created from COSPACEX workspace.")
                     }]
                 }]
             },

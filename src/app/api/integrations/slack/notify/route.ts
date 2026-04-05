@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             type: "section",
             text: {
                 type: "mrkdwn",
-                text: `*${stageEmoji[event] || "📢"} PresaleX Deal Update*\n${deal
+                text: `*${stageEmoji[event] || "📢"} COSPACEX Deal Update*\n${deal
                     ? `*${deal.title}* — ${deal.company}\nStage: \`${event}\` | Value: $${(deal.value || 0).toLocaleString()}`
                     : event
                     }`,
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
             type: "actions",
             elements: [{
                 type: "button",
-                text: { type: "plain_text", text: "View in PresaleX" },
+                text: { type: "plain_text", text: "View in COSPACEX" },
                 url: `${process.env.NEXTAUTH_URL || "http://localhost:3001"}/deals`,
             }],
         },

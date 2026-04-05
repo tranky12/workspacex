@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
 
 export const metadata: Metadata = {
-  title: "PresaleX — SC&L Expert Workspace",
+  title: "COSPACEX — SC&L Expert Workspace",
   description: "Professional presale solution support workspace for Supply Chain & Logistics teams",
 }
 

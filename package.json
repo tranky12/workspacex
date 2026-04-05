@@ -1,7 +1,7 @@
 {
-  "name": "workspacex",
-  "version": "2.0.3",
-  "description": "WORKSPACEX — Multi-tenant AI Workspace Platform | Powered by Gemini AI",
+  "name": "cospacex",
+  "version": "2.1.0",
+  "description": "COSPACEX — Multi-tenant AI Workspace Platform | Powered by Gemini AI",
   "author": "Smartlog",
   "repository": {
     "type": "git",
@@ -62,7 +62,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wait-on": "^9.0.4"
+    "typescript": "^5"
   }
 }
