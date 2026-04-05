@@ -1,0 +1,44 @@
+name: Release PresaleX Desktop App
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger on tags like v1.0.0
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+        
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Next.js App
+        run: npm run build
+
+      - name: Build/Release Electron App (Mac)
+        if: matrix.os == 'macos-latest'
+        run: npx electron-builder --mac -c electron-builder.json --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build/Release Electron App (Windows)
+        if: matrix.os == 'windows-latest'
+        run: npx electron-builder --win -c electron-builder.json --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -30,6 +30,7 @@ function startNextServer() {
                 ...process.env,
                 NODE_ENV: "production",
                 PORT: String(PORT),
+                ELECTRON_RUN_AS_NODE: "1",
             },
             stdio: ["ignore", "pipe", "pipe"],
         })
