@@ -8,9 +8,11 @@ export function middleware(req: NextRequest) {
     // Always allow: auth routes, static files, login page
     if (
         pathname.startsWith("/api/auth") ||
+        pathname.startsWith("/api/health") ||
         pathname.startsWith("/_next") ||
         pathname.startsWith("/uploads") ||
         pathname === "/login" ||
+        pathname === "/health" ||
         pathname === "/favicon.ico"
     ) {
         return NextResponse.next()

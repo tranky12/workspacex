@@ -197,6 +197,7 @@ function createMenu() {
                 { label: "Deals", click: () => mainWindow?.loadURL(`${NEXT_URL}/deals`) },
                 { label: "Skills", click: () => mainWindow?.loadURL(`${NEXT_URL}/skills`) },
                 { label: "Knowledge Base", click: () => mainWindow?.loadURL(`${NEXT_URL}/knowledge`) },
+                { label: "System health", click: () => mainWindow?.loadURL(`${NEXT_URL}/health`) },
                 { type: "separator" },
                 { role: "reload" },
                 { role: "toggleDevTools" },

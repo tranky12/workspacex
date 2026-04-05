@@ -50,6 +50,8 @@ npm run dev
 ```
 Open [http://localhost:3001](http://localhost:3001) (dev server port is **3001**).
 
+**Health check:** [http://localhost:3001/health](http://localhost:3001/health) — kiểm tra DB và env (không cần đăng nhập).
+
 ## 🔑 Environment Variables (`.env.local`)
 ```
 # Google OAuth

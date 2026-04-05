@@ -2,7 +2,11 @@ export default function SetupGuidePage() {
     return (
         <div className="max-w-3xl">
             <h1 className="text-3xl font-bold text-white font-playfair mb-1">Setup Guide</h1>
-            <p className="text-gray-400 text-sm mb-8">Follow these steps to fully activate COSPACEX for your team.</p>
+            <p className="text-gray-400 text-sm mb-4">Follow these steps to fully activate COSPACEX for your team.</p>
+            <p className="text-sm mb-8">
+                <a href="/health" className="text-cyan-400 hover:text-cyan-300 underline">System health</a>
+                <span className="text-gray-500"> — kiểm tra DB &amp; biến môi trường (không cần đăng nhập)</span>
+            </p>
 
             <div className="space-y-5">
                 {/* Step 1 */}

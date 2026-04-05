@@ -52,8 +52,11 @@ export default async function LoginPage() {
                 </div>
 
                 {/* Footer */}
-                <div className="text-center mt-6 text-xs text-gray-600">
-                    COSPACEX v2.2.1 · Powered by Gemini AI · Smartlog &copy; 2026
+                <div className="text-center mt-6 text-xs text-gray-600 space-y-2">
+                    <div>
+                        <a href="/health" className="text-cyan-500/80 hover:text-cyan-400">Kiểm tra hệ thống (DB &amp; env)</a>
+                    </div>
+                    <div>COSPACEX v2.2.2 · Powered by Gemini AI · Smartlog &copy; 2026</div>
                 </div>
             </div>
         </div>

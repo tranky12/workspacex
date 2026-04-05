@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.2] - 2026-04-05
+
+### System health (tự kiểm tra trước khi đăng nhập)
+- **`GET /api/health`** — kiểm tra kết nối PostgreSQL (`SELECT 1`) và **có/không** các biến môi trường (không trả giá trị secret).
+- **Trang `/health`** — UI checklist; public (middleware cho phép không session).
+- Liên kết từ **Login**, **Setup Guide**, sidebar **System health**, menu Electron **View → System health**.
+
+---
+
 ## [2.2.1] - 2026-04-05
 
 ### Desktop — fix `spawn ENOTDIR` khi mở app đóng gói (macOS / Windows)

@@ -17,6 +17,7 @@ const navItems = [
     { href: "/knowledge", icon: "📚", label: "Knowledge Base", section: "library" },
     { href: "/settings", icon: "⚙️", label: "Settings", section: "system" },
     { href: "/setup", icon: "🚀", label: "Setup Guide", section: "system" },
+    { href: "/health", icon: "💓", label: "System health", section: "system" },
 ]
 
 
