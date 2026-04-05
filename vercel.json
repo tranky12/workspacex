@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "buildCommand": "npx prisma generate && next build",
+    "framework": "nextjs",
+    "env": {
+        "DATABASE_URL": "@database_url",
+        "AUTH_GOOGLE_ID": "@auth_google_id",
+        "AUTH_GOOGLE_SECRET": "@auth_google_secret",
+        "AUTH_SECRET": "@auth_secret",
+        "GEMINI_API_KEY": "@gemini_api_key",
+        "OPENAI_API_KEY": "@openai_api_key",
+        "ANTHROPIC_API_KEY": "@anthropic_api_key",
+        "NEXTAUTH_URL": "@nextauth_url"
+    }
+}
