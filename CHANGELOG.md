@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.2.0] - 2026-04-05
+
+### Organization & phòng ban (multi-workspace + phân quyền)
+- **Organization** — mô hình công ty (tenant): một tổ chức chứa nhiều **Workspace** (phòng ban / team). Dữ liệu vận hành (deals, clients, projects, knowledge, …) vẫn **tách theo `workspaceId`**; SSOT nghiệp vụ có thể xây thêm ở tầng org trong các bước sau.
+- **OrganizationMember** — vai trò: `org_owner` | `org_admin` | `member`. `org_owner` / `org_admin` **xem được mọi workspace** thuộc tổ chức đó; `member` chỉ thấy workspace được mời (WorkspaceMember).
+- **Workspace** — trường `organizationId` (bắt buộc với workspace mới; dữ liệu cũ cần `npm run db:backfill-org`). Tạo workspace mới: hoặc gửi `organizationId` (cần quyền org admin), hoặc **tự tạo Organization** mới và gán user làm `org_owner`.
+- **WorkspaceMember.permissions** — trường JSON tùy chọn để phân quyền theo module (`deals`, `clients`, `projects`, `knowledge`, `reports`), giá trị `none` | `read` | `write`. Nếu `null`, áp dụng mặc định theo `role` (helper: `src/lib/workspace-access.ts`).
+- **API mới:** `GET/POST /api/organizations` — liệt kê / tạo tổ chức.
+- **API cập nhật:** `GET/POST /api/workspace` — trả về kèm `organization`; tạo workspace gắn org.
+
+### Migration cơ sở dữ liệu có sẵn
+1. `npx prisma db push` (hoặc migrate tương đương).
+2. Nếu đã có bản ghi `Workspace` cũ thiếu org: `npm run db:backfill-org` (script `prisma/backfill-organizations.ts`).
+
+### Desktop (GitHub Releases)
+- Bản build **2.2.0** — DMG (macOS arm64 + x64) và installer Windows (NSIS). Đổi app identity / branding theo COSPACEX từ 2.1.0; cài đặt mới hoặc cập nhật từ 2.1.x qua kênh release.
+
+---
+
 ## [2.0.1] - 2026-04-05
 ### Cập nhật hệ thống & Fix lỗi sau khi Upgrade
 - **Framework Upgrade**: Khắc phục lỗi build sau khi framework được cập nhật lên Next.js 16.2.2 và Prisma v7.

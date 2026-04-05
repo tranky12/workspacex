@@ -53,7 +53,7 @@ export default async function LoginPage() {
 
                 {/* Footer */}
                 <div className="text-center mt-6 text-xs text-gray-600">
-                    COSPACEX v2.1 · Powered by Gemini AI · Smartlog &copy; 2026
+                    COSPACEX v2.2 · Powered by Gemini AI · Smartlog &copy; 2026
                 </div>
             </div>
         </div>

@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Git tag cho bản phát hành (khớp version trong package.json, ví dụ v2.1.0)'
+        description: 'Git tag cho bản phát hành (khớp version trong package.json, ví dụ v2.2.0)'
         required: true
-        default: 'v2.1.0'
+        default: 'v2.2.0'
 
 permissions:
   contents: write

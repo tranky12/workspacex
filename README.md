@@ -88,12 +88,20 @@ src/
 └── prisma/               # Database schema
 ```
 
+## 🏢 Organization & workspace (phòng ban)
+
+- **Organization** — công ty / tenant: một tổ chức có nhiều **Workspace** (phòng ban). API: `GET` / `POST` `/api/organizations`.
+- **Workspace** — dữ liệu vận hành (deals, clients, projects, knowledge, …) **tách theo `workspaceId`**. Mỗi workspace thuộc một `organizationId`.
+- **Phân quyền:** `OrganizationMember` (`org_owner` | `org_admin` | `member`): admin cấp tổ chức xem mọi workspace trong org; thành viên thường chỉ thấy workspace được thêm vào. Trong workspace, `WorkspaceMember.role` + tùy chọn `permissions` (JSON theo module) — xem `src/lib/workspace-access.ts`.
+- **DB có sẵn:** sau `npx prisma db push`, nếu còn workspace cũ không có org, chạy `npm run db:backfill-org`.
+
 ## 📋 Roadmap (this repo: [tranky12/workspacex](https://github.com/tranky12/workspacex))
 - [x] **Phase 1** — Next.js + Auth + Gemini AI + file upload + core workspace
 - [x] **Desktop** — Electron app + CI builds + [GitHub Releases](https://github.com/tranky12/workspacex/releases) (DMG / Windows installer)
+- [x] **Org / multi-workspace** — Organization + workspace phòng ban + API + backfill (v2.2+)
 - [ ] **Phase 2** — Integrations: Slack / Jira / Google Drive (API routes exist; OAuth UX, error handling, and coverage still in progress)
 - [ ] **Phase 3** — Smartlog template engine + richer PPTX export
-- [ ] **Phase 4** — Multi-tenant polish, roles, production hardening
+- [ ] **Phase 4** — SSOT master data cấp org, enforcement permissions trên mọi API, production hardening
 
 ## 🔐 Desktop builds: code signing (optional)
 

@@ -52,6 +52,7 @@ model User {
   settings           UserSettings?
   skillRuns          SkillRun[]
   workspaceMembers   WorkspaceMember[]
+  organizationMembers OrganizationMember[]
   joinRequests       JoinRequest[]
   ownedWorkspaces    Workspace[]         @relation("WorkspaceOwner")
   assignedTasks      Task[]              @relation("TaskAssignee")
@@ -69,27 +70,55 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ─── WORKSPACE ────────────────────────────────────────────
-model Workspace {
-  id           String            @id @default(cuid())
-  name         String
-  slug         String            @unique
-  description  String?
-  logoUrl      String?
-  planType     String            @default("team") // free | team | enterprise
-  ownerId      String
-  owner        User              @relation("WorkspaceOwner", fields: [ownerId], references: [id])
-  members      WorkspaceMember[]
-  joinRequests JoinRequest[]
-  projects     Project[]
-  deals        Deal[]
-  clients      Client[]
-  knowledgeDocs KnowledgeDoc[]
-  settings     WorkspaceSettings?
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
+// ─── ORGANIZATION (company / tenant) — SSOT boundary above workspaces ───
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  workspaces  Workspace[]
+  members     OrganizationMember[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
+// Who belongs to the company; org_admin / org_owner can see all workspaces in org
+model OrganizationMember {
+  id               String       @id @default(cuid())
+  organizationId   String
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role             String       @default("member") // org_owner | org_admin | member
+  joinedAt         DateTime     @default(now())
+
+  @@unique([organizationId, userId])
+}
+
+// ─── WORKSPACE (phòng ban / team) — dữ liệu tách theo workspaceId ───
+model Workspace {
+  id              String            @id @default(cuid())
+  name            String
+  slug            String            @unique
+  description     String?
+  logoUrl         String?
+  planType        String            @default("team") // free | team | enterprise
+  organizationId  String?
+  organization    Organization?     @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  ownerId         String
+  owner           User              @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  members         WorkspaceMember[]
+  joinRequests    JoinRequest[]
+  projects        Project[]
+  deals           Deal[]
+  clients         Client[]
+  knowledgeDocs   KnowledgeDoc[]
+  settings        WorkspaceSettings?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+// Phân quyền trong phòng: role + permissions JSON tùy chọn (null = theo role mặc định)
 model WorkspaceMember {
   id          String    @id @default(cuid())
   workspaceId String
@@ -98,6 +127,7 @@ model WorkspaceMember {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   role        String    @default("member") // owner | admin | consultant | viewer
   projectIds  String[]  // projects this member is assigned to
+  permissions Json?     // e.g. { "deals":"read","clients":"none","projects":"write","knowledge":"read","reports":"read" }
   joinedAt    DateTime  @default(now())
 
   @@unique([workspaceId, userId])

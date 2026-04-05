@@ -1,6 +1,6 @@
 {
   "name": "cospacex",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "COSPACEX — Multi-tenant AI Workspace Platform | Powered by Gemini AI",
   "author": "Smartlog",
   "repository": {
@@ -16,6 +16,7 @@
     "lint": "eslint",
     "seed": "npx tsx prisma/seed.ts",
     "db:push": "npx prisma db push",
+    "db:backfill-org": "npx tsx prisma/backfill-organizations.ts",
     "db:studio": "npx prisma studio",
     "electron:dev": "NODE_ENV=development electron electron/main.js",
     "electron:build": "npm run build && npx electron-builder --config electron-builder.json",
