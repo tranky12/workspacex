@@ -1,7 +1,7 @@
 {
-  "name": "presalex-workspace",
-  "version": "1.1.0",
-  "description": "SC&L Expert Presale Workspace — Powered by AI",
+  "name": "workspacex",
+  "version": "2.0.0",
+  "description": "WORKSPACEX — Multi-tenant AI Workspace Platform | Powered by Gemini AI",
   "main": "electron/main.js",
   "private": true,
   "scripts": {
