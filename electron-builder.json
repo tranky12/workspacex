@@ -2,6 +2,7 @@
     "appId": "com.smartlog.cospacex",
     "productName": "COSPACEX",
     "copyright": "Copyright © 2026 Smartlog",
+    "asar": false,
     "icon": "electron/assets/icon.png",
     "files": [
         "electron/**/*",

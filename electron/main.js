@@ -65,13 +65,20 @@ function waitForHttpServer(urlStr, timeoutMs = 60000) {
     })
 }
 
+// ─── App root (packaged: must be a real directory — not app.asar, or spawn cwd → ENOTDIR)
+function getAppRoot() {
+    if (isDev) return path.join(__dirname, "..")
+    if (app.isPackaged) return app.getAppPath()
+    return path.join(__dirname, "..")
+}
+
 // ─── Start Next.js server ───────────────────────────────────────
 function startNextServer() {
     if (isDev) return Promise.resolve() // dev mode: Next.js already running
 
     return new Promise((resolve, reject) => {
-        const nextBin = path.join(__dirname, "..", "node_modules", "next", "dist", "bin", "next")
-        const appDir = path.join(__dirname, "..")
+        const appDir = getAppRoot()
+        const nextBin = path.join(appDir, "node_modules", "next", "dist", "bin", "next")
 
         nextServer = spawn(process.execPath, [nextBin, "start", "--port", String(PORT)], {
             cwd: appDir,

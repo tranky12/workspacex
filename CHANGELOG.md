@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1] - 2026-04-05
+
+### Desktop — fix `spawn ENOTDIR` khi mở app đóng gói (macOS / Windows)
+- **Nguyên nhân:** `cwd` của process `next start` trỏ vào **`app.asar`** (là **file**), không phải thư mục → Node báo **`ENOTDIR`**.
+- **Cách xử lý:** Bật **`asar: false`** trong `electron-builder.json` để toàn bộ app nằm trong thư mục thật (`Resources/app/...`). Trong `electron/main.js`, khi đã đóng gói dùng **`app.getAppPath()`** làm thư mục gốc + `cwd` cho `spawn`.
+
+---
+
 ## [2.2.0] - 2026-04-05
 
 ### Organization & phòng ban (multi-workspace + phân quyền)
