@@ -12,6 +12,7 @@ type Skill = {
 const CATEGORY_LABELS: Record<string, string> = {
     meddic: "🎯 MEDDIC", proposal: "📐 Proposal", pain_point: "💡 Pain Point",
     competitive: "⚔️ Competitive", custom: "🛠️ Custom",
+    pptx_export: "📊 PPTX Download", drive_export: "☁️ Save to Google Drive",
 }
 
 export default function SkillsPage() {
@@ -49,8 +50,51 @@ export default function SkillsPage() {
                 body: JSON.stringify({ inputs }),
             })
             const data = await res.json()
-            setOutput(data.error ? `⚠️ Error: ${data.error}` : data.output)
-            if (!data.error) loadSkills() // refresh usage count
+            if (data.error) {
+                setOutput(`⚠️ Error: ${data.error}`)
+            } else {
+                const outputText = data.output;
+                if (selected.category === "pptx_export" || selected.category === "drive_export") {
+                    try {
+                        const parsed = JSON.parse(outputText.replace(/```json|```/g, "").trim());
+                        setOutput("⏳ Parsing successful, generating presentation...");
+                        const exportRes = await fetch("/api/export/pptx", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ ...parsed, saveToDrive: selected.category === "drive_export" }),
+                        });
+                        
+                        if (selected.category === "drive_export") {
+                            const driveData = await exportRes.json();
+                            if (driveData.success) {
+                                setOutput(`✅ **Success!** File saved to Google Drive!\n\n[Click here to view file in Drive](https://drive.google.com/file/d/${driveData.driveFileId})`);
+                            } else {
+                                setOutput(`⚠️ Error saving to drive: ${driveData.error}\n\nMake sure your Google account is linked with Drive permissions.`);
+                            }
+                        } else {
+                            if (!exportRes.ok) throw new Error("Export failed");
+                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            const matches = filenameRegex.exec(exportRes.headers.get("content-disposition") || "");
+                            const filename = matches != null && matches[1] ? matches[1].replace(/['"]/g, "") : "Presentation.pptx";
+                            
+                            const blob = await exportRes.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            setOutput("✅ Success! Your PPTX file has been downloaded.");
+                        }
+                    } catch (parseErr) {
+                         setOutput(`⚠️ Error generating file. Raw AI output:\n${outputText}`);
+                    }
+                } else {
+                    setOutput(data.output)
+                }
+                loadSkills() // refresh usage count
+            }
         } catch {
             setOutput("⚠️ Network error — please try again")
         }

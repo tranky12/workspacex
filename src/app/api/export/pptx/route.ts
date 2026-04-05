@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 
 // POST /api/export/pptx — generate branded PPTX from proposal data
 export async function POST(req: NextRequest) {
@@ -7,7 +8,7 @@ export async function POST(req: NextRequest) {
         const session = await auth()
         if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-        const { title, company, slides, tone = "executive" } = await req.json()
+        const { title, company, slides, tone = "executive", saveToDrive = false } = await req.json()
 
         // Dynamic import of pptxgenjs (server-only)
         const PptxGenJS = (await import("pptxgenjs")).default
@@ -129,12 +130,43 @@ export async function POST(req: NextRequest) {
 
         // Generate buffer
         const buffer = await pptx.write({ outputType: "arraybuffer" }) as ArrayBuffer
+        const filename = `PresaleX-${(company || "proposal").replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.pptx`
+
+        if (saveToDrive) {
+            // Get user's Google access token
+            const account = await prisma.account.findFirst({
+                where: { userId: session.user.id!, provider: "google" },
+            })
+            if (!account?.access_token) {
+                return NextResponse.json({ error: "Google access token not available. Please re-login with Drive permissions." }, { status: 401 })
+            }
+
+            // Upload to Google Drive using multipart upload
+            const metadata = { name: filename, mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation" }
+            const form = new FormData()
+            form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }))
+            form.append("file", new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" }))
+
+            const uploadRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+                method: "POST",
+                headers: { Authorization: `Bearer ${account.access_token}` },
+                body: form,
+            })
+
+            if (!uploadRes.ok) {
+                const err = await uploadRes.json()
+                return NextResponse.json({ error: `Google Drive Upload failed: ${err.error?.message || uploadRes.statusText}` }, { status: uploadRes.status })
+            }
+
+            const driveData = await uploadRes.json()
+            return NextResponse.json({ success: true, message: "Saved to Google Drive!", driveFileId: driveData.id, driveFileName: filename })
+        }
 
         return new NextResponse(Buffer.from(buffer), {
             status: 200,
             headers: {
                 "Content-Type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                "Content-Disposition": `attachment; filename="PresaleX-${(company || "proposal").replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.pptx"`,
+                "Content-Disposition": `attachment; filename="${filename}"`,
             },
         })
     } catch (error) {
